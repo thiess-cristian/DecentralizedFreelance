@@ -1,20 +1,21 @@
 <template>
-  <div class="post-container">
-    <div class="title">title</div>
-    <InfoSection />
-    <div class="description">description</div>
-  </div>
-
-  <div class="submit-container">
-    <div class="submit-title">Submit Request</div>
-    <div class="submit-form">
-      <form action="">
-        <label for="description">Request description:</label><br />
-        <input type="text" id="description" name="description" /><br />
-        <input type="submit" value="Submit" />
-      </form>
+  <div class="main-container">
+    <div class="post-container">
+      <div class="title">title</div>
+      <InfoSection />
+      <div class="description">description</div>
     </div>
-    <div class="price">price</div>
+    <div class="submit-container">
+      <div class="submit-title">Submit Request</div>
+      <div class="submit-form">
+        <form action="">
+          <textarea rows="10" cols="50"></textarea>
+
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+      <div class="price">price</div>
+    </div>
   </div>
 </template>
 
@@ -29,5 +30,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.main-container {
+  display: flex;
+  justify-content: center;
+}
+
+.post-container {
+  width: 50%;
+}
+
+.submit-container {
+  width: 50%;
+}
 </style>

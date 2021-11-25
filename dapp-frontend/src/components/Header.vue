@@ -4,10 +4,14 @@
 
     <div class="button-container">
       <div class="add-button">
-        <button>ADD</button>
+        <button v-on:click="createPost">ADD</button>
       </div>
       <div class="connect-button">
         <button>CONNECT</button>
+      </div>
+
+      <div class="account-button">
+        <button>ACCOUNT</button>
       </div>
     </div>
   </div>
@@ -16,11 +20,16 @@
 <script>
 export default {
   name: "Header",
+  methods: {
+    createPost: function () {
+      this.$router.push("/create_post");
+    },
+  },
 };
 </script>
 
 
-<style>
+<style scoped>
 .header {
   display: flex;
   justify-content: space-between;
