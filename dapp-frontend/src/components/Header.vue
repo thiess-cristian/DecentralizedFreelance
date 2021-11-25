@@ -11,7 +11,7 @@
       </div>
 
       <div class="account-button">
-        <button>ACCOUNT</button>
+        <button v-on:click="accessAccount">ACCOUNT</button>
       </div>
     </div>
   </div>
@@ -23,6 +23,9 @@ export default {
   methods: {
     createPost: function () {
       this.$router.push("/create_post");
+    },
+    accessAccount: function () {
+      this.$router.push("/account");
     },
   },
 };
