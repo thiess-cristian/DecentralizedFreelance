@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <div class="name">name</div>
-    <div class="earnings">earnings</div>
+  <div class="container block">
+    <div class="name title is-1">name</div>
+    <div class="earnings block">earnings</div>
   </div>
 </template>
 
