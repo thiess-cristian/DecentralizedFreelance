@@ -1,8 +1,14 @@
 <template>
   <section class="section">
-    <p class="title">name</p>
-    <p class="title">address</p>
-    <button class="button" v-on:click="accessMining">mining</button>
+    <div class="columns">
+      <div class="column">
+        <p class="title">name</p>
+        <p class="title">address</p>
+      </div>
+      <div class="column">
+        <button class="button" v-on:click="accessMining">mining</button>
+      </div>
+    </div>
   </section>
 
   <section class="section">
