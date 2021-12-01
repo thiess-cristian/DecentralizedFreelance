@@ -1,20 +1,18 @@
 <template>
-  <div class="header">
-    <div class="logo"><router-link to="/">LOGO</router-link></div>
-
-    <div class="button-container">
-      <div class="add-button">
-        <button v-on:click="createPost">ADD</button>
-      </div>
-      <div class="connect-button">
-        <button>CONNECT</button>
-      </div>
-
-      <div class="account-button">
-        <button v-on:click="accessAccount">ACCOUNT</button>
+  <nav class="navbar has-shadow">
+    <div class="navbar-brand py-2 px-2">
+      <a class="navbar-item" v-on:click="accessHome">LOGO</a>
+    </div>
+    <div class="navbar-end">
+      <div class="container py-2 px-2">
+        <button class="navbar-item button" v-on:click="createPost">Add</button>
+        <button class="navbar-item button">Connect</button>
+        <button class="navbar-item button" v-on:click="accessAccount">
+          Account
+        </button>
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -27,26 +25,13 @@ export default {
     accessAccount: function () {
       this.$router.push("/account");
     },
+    accessHome: function () {
+      this.$router.push("/");
+    },
   },
 };
 </script>
 
 
 <style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-}
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.add-button {
-  align-self: flex-end;
-}
-
-.connect-button {
-  align-self: flex-end;
-}
 </style>

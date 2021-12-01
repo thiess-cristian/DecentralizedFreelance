@@ -1,11 +1,14 @@
 <template>
   <div class="container">
-    <Request />
-    <div class="download-file">
-      <div class="download-button">
-        <button>download</button>
+    <div class="columns">
+      <div class="column is-6">
+        <Request />
       </div>
-      <div class="accepted-symbol">symbol</div>
+
+      <div class="column is-6">
+        <button class="button">download</button>
+        <div class="accepted-symbol">symbol</div>
+      </div>
     </div>
   </div>
 </template>
@@ -21,13 +24,5 @@ export default {
 };
 </script>
 
-<style>
-.container {
-  border-style: solid;
-  border-color: crimson;
-  display: flex;
-}
-.download-file {
-  display: flex;
-}
+<style scoped>
 </style>

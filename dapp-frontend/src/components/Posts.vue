@@ -1,33 +1,38 @@
 <template>
-  <div class="search-bar-container">
-    <div class="search-input">
-      <input />
+  <section class="section">
+    <container class="container">
+      <div class="field has-addons">
+        <div class="control">
+          <input class="input" type="text" placeholder="Find a repository" />
+        </div>
+        <div class="control">
+          <a class="button is-info"> Search </a>
+        </div>
+      </div>
+    </container>
+
+    <div class="container">
+      <div class="columns is-8 is-variable is-centered is-multiline">
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </div>
     </div>
-    <div class="search-button">
-      <button>SEARCH</button>
-    </div>
-  </div>
-  <div class="posts-container">
-    <div class="posts">
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -40,18 +45,4 @@ export default {
 </script>
 
 <style scoped>
-.search-bar-container {
-  display: flex;
-  justify-content: center;
-}
-
-.posts-container {
-  display: flex;
-  justify-content: center;
-}
-
-.posts {
-  display: grid;
-  grid-template-columns: repeat(3, 200px);
-}
 </style>

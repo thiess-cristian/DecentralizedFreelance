@@ -1,7 +1,7 @@
 <template>
-  <div class="container block">
-    <div class="name title is-1">name</div>
-    <div class="earnings block">earnings</div>
+  <div class="container box has-shadow">
+    <p class="title">name</p>
+    <p>earnings</p>
   </div>
 </template>
 
@@ -12,10 +12,4 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  border-style: solid;
-  border-color: blueviolet;
-  display: flex;
-  height: 100px;
-}
 </style>

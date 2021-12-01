@@ -1,12 +1,19 @@
 <template>
-  <div class="post-container">
-    <div class="post-title">
-      <router-link to="/post">title</router-link>
+  <div class="column is-4-tablet is-3-desktop">
+    <div class="card">
+      <div class="card-content">
+        <div class="title is-size-4">title</div>
+        <div class="card-image">
+          <img src="../assets/logo.png" />
+        </div>
+        <p>12.43</p>
+      </div>
+      <footer class="card-footer">
+        <div class="card-footer-item">
+          <router-link to="/post" class="has-text-grey">info</router-link>
+        </div>
+      </footer>
     </div>
-    <div class="image">
-      <img src="../assets/logo.png" />
-    </div>
-    <div class="price">starting from 10</div>
   </div>
 </template>
 
@@ -17,19 +24,4 @@ export default {
 </script>
 
 <style scoped>
-img {
-  width: 100px;
-  height: auto;
-}
-
-.post-container {
-  width: 170px;
-  height: auto;
-  background-color: chocolate;
-  margin-top: 80px;
-  margin-bottom: 80px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: cornflowerblue;
-}
 </style>
