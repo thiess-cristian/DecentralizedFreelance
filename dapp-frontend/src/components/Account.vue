@@ -1,42 +1,43 @@
 <template>
-  <div class="account-header">
-    <div class="account-data">
-      <div class="public-name">name</div>
-      <div class="address">address</div>
-    </div>
-    <div class="mining-button">
-      <button v-on:click="accessMining">mining</button>
-    </div>
-  </div>
+  <section class="section">
+    <p class="title">name</p>
+    <p class="title">address</p>
+    <button class="button" v-on:click="accessMining">mining</button>
+  </section>
 
-  <div class="requests-container">
-    <div class="requests-buttons">
-      <div class="requests-to-fulfil">
-        <button v-on:click="displayRequestsToFulfilFunction">
-          requests to fulfil
-        </button>
+  <section class="section">
+    <div class="contai">
+      <div class="tabs is-boxed">
+        <ul>
+          <li class="is-active" data-target="product-details">
+            <a v-on:click="displayRequestsToFulfilFunction"
+              >requests to fulfil</a
+            >
+          </li>
+          <li data-target="delivery-info">
+            <a v-on:click="displayRequestsFulfiledFunction"
+              >requests fulfiled</a
+            >
+          </li>
+        </ul>
       </div>
 
-      <div class="requests-fulfiled">
-        <button v-on:click="displayRequestsFulfiledFunction">
-          requests fulfiled
-        </button>
+      <div class="px-2" id="tab-content">
+        <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
+          <RequestToFulfil class="request" />
+          <RequestToFulfil class="request" />
+          <RequestToFulfil class="request" />
+        </div>
+
+        <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
+          <RequestFulfiled class="request" />
+          <RequestFulfiled class="request" />
+          <RequestFulfiled class="request" />
+          <RequestFulfiled class="request" />
+        </div>
       </div>
     </div>
-
-    <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
-      <RequestToFulfil class="request" />
-      <RequestToFulfil class="request" />
-      <RequestToFulfil class="request" />
-    </div>
-
-    <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
-      <RequestFulfiled class="request" />
-      <RequestFulfiled class="request" />
-      <RequestFulfiled class="request" />
-      <RequestFulfiled class="request" />
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -71,23 +72,4 @@ export default {
 </script>
 
 <style scoped>
-.account-header {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.requests-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.requests-buttons {
-  display: flex;
-  align-self: center;
-}
-
-.request {
-  align-self: center;
-  width: 1000px;
-}
 </style>
