@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from "../components/Home.vue"
-import PostSubmit from "../components/PostSubmit.vue"
-import CreatePost from "../components/CreatePost.vue"
-import Account from "../components/Account.vue"
-import Mining from "../components/Mining.vue"
+import Home from "../views/Home.vue"
+import PostSubmit from "../views/PostSubmit.vue"
+import CreatePost from "../views/CreatePost.vue"
+import Account from "../views/Account.vue"
+import Mining from "../views/Mining.vue"
 
 const routes = [
     {

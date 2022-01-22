@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import MiningStation from "./MiningStation.vue";
+import MiningStation from "../components/MiningStation.vue";
 
 export default {
   name: "Mining",

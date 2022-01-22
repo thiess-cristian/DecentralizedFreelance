@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import InfoSection from "./InfoSection.vue";
+import InfoSection from "../components/InfoSection.vue";
 
 export default {
   name: "PostSubmit",

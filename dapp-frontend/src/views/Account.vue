@@ -47,8 +47,8 @@
 </template>
 
 <script>
-import RequestToFulfil from "./RequestToFulfil.vue";
-import RequestFulfiled from "./RequestFulfiled.vue";
+import RequestToFulfil from "../components/RequestToFulfil.vue";
+import RequestFulfiled from "../components/RequestFulfiled.vue";
 export default {
   name: "Account",
   components: {
