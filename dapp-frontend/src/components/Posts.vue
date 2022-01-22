@@ -1,35 +1,34 @@
 <template>
   <section class="section">
-    <container class="container">
-      <div class="field has-addons">
-        <div class="control">
-          <input class="input" type="text" placeholder="Find a repository" />
-        </div>
-        <div class="control">
-          <a class="button is-info"> Search </a>
-        </div>
+    <div class="field has-addons">
+      <div class="control">
+        <input class="input" type="text" placeholder="Find a repository" />
       </div>
-    </container>
+      <div class="control">
+        <a class="button is-info"> Search </a>
+      </div>
+    </div>
 
     <div class="container">
-      <div class="columns is-8 is-variable is-centered is-multiline">
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+      <div class="columns is-variable is-multiline">
+        <div class="column is-4-tablet is-3-desktop">
+          <Post />
+        </div>
+        <div class="column is-4-tablet is-3-desktop">
+          <Post />
+        </div>
+        <div class="column is-4-tablet is-3-desktop">
+          <Post />
+        </div>
+        <div class="column is-4-tablet is-3-desktop">
+          <Post />
+        </div>
+        <div class="column is-4-tablet is-3-desktop">
+          <Post />
+        </div>
+        <div class="column is-4-tablet is-3-desktop">
+          <Post />
+        </div>
       </div>
     </div>
   </section>

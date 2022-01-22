@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     <div class="columns">
-      <div class="column is-1">
+      <div class="column">
         <button class="button">left arrow</button>
       </div>
-
-      <div class="column is-10">some content</div>
-      <div class="column is-1">
+      <div class="column">some content</div>
+      <div class="column">
         <button class="button">left arrow</button>
       </div>
     </div>

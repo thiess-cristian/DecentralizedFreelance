@@ -1,5 +1,5 @@
 <template>
-  <div class="container box has-shadow">
+  <div class="box has-shadow">
     <p class="title">name</p>
     <p>earnings</p>
   </div>

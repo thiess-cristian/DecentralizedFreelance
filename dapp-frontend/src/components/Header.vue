@@ -1,15 +1,17 @@
 <template>
   <nav class="navbar has-shadow">
-    <div class="navbar-brand py-2 px-2">
-      <a class="navbar-item" v-on:click="accessHome">LOGO</a>
+    <div class="navbar-start">
+      <router-link class="navbar-item" to="/"> Home </router-link>
     </div>
     <div class="navbar-end">
-      <div class="container py-2 px-2">
-        <button class="navbar-item button" v-on:click="createPost">Add</button>
+      <div class="buttons">
+        <router-link class="navbar-item button" to="/create_post">
+          Create Post
+        </router-link>
         <button class="navbar-item button">Connect</button>
-        <button class="navbar-item button" v-on:click="accessAccount">
+        <router-link class="navbar-item button" to="/account">
           Account
-        </button>
+        </router-link>
       </div>
     </div>
   </nav>
@@ -18,17 +20,7 @@
 <script>
 export default {
   name: "Header",
-  methods: {
-    createPost: function () {
-      this.$router.push("/create_post");
-    },
-    accessAccount: function () {
-      this.$router.push("/account");
-    },
-    accessHome: function () {
-      this.$router.push("/");
-    },
-  },
+  methods: {},
 };
 </script>
 

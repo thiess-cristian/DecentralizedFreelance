@@ -1,49 +1,51 @@
 <template>
-  <section class="section">
-    <div class="columns">
-      <div class="column">
-        <p class="title">name</p>
-        <p class="title">address</p>
-      </div>
-      <div class="column">
-        <button class="button" v-on:click="accessMining">mining</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="contai">
-      <div class="tabs is-boxed">
-        <ul>
-          <li class="is-active" data-target="product-details">
-            <a v-on:click="displayRequestsToFulfilFunction"
-              >requests to fulfil</a
-            >
-          </li>
-          <li data-target="delivery-info">
-            <a v-on:click="displayRequestsFulfiledFunction"
-              >requests fulfiled</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div class="px-2" id="tab-content">
-        <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
-          <RequestToFulfil class="request" />
-          <RequestToFulfil class="request" />
-          <RequestToFulfil class="request" />
+  <div class="container">
+    <section class="section">
+      <div class="columns">
+        <div class="column">
+          <p class="title">Name</p>
+          <p class="title">Address</p>
         </div>
-
-        <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
-          <RequestFulfiled class="request" />
-          <RequestFulfiled class="request" />
-          <RequestFulfiled class="request" />
-          <RequestFulfiled class="request" />
+        <div class="column">
+          <router-link class="button" to="/mining"> Mining </router-link>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="section">
+      <div class="contai">
+        <div class="tabs is-boxed">
+          <ul>
+            <li class="is-active" data-target="product-details">
+              <a v-on:click="displayRequestsToFulfilFunction"
+                >Requests to fulfil</a
+              >
+            </li>
+            <li data-target="delivery-info">
+              <a v-on:click="displayRequestsFulfiledFunction"
+                >Requests fulfiled</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div id="tab-content">
+          <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
+            <RequestToFulfil />
+            <RequestToFulfil />
+            <RequestToFulfil />
+          </div>
+
+          <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
+            <RequestFulfiled />
+            <RequestFulfiled />
+            <RequestFulfiled />
+            <RequestFulfiled />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -69,9 +71,6 @@ export default {
     displayRequestsFulfiledFunction: function () {
       this.displayRequestsToFulfil = false;
       this.displayRequestsFulfiled = true;
-    },
-    accessMining: function () {
-      this.$router.push("/mining");
     },
   },
 };

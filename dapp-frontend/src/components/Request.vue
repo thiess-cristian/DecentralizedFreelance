@@ -1,11 +1,15 @@
 <template>
-  <div class="container box has-shadow">
-    <div class="title">title</div>
-    <p>price</p>
+  <div class="box">
+    <div class="block">
+      <div class="title">title</div>
+    </div>
+    <div class="block">
+      <p>price</p>
+    </div>
     <button class="button" v-on:click="displayDescriptionFunction">
       arrow
     </button>
-    <div v-if="displayDescription" class="description">description</div>
+    <div v-if="displayDescription">description</div>
   </div>
 </template>
 

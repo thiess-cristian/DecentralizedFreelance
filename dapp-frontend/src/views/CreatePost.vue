@@ -1,46 +1,45 @@
 <template>
   <div class="container">
-    <div class="title">Create a post</div>
-
-    <form>
-      <div class="field">
-        <label class="label">title</label>
-        <div class="control">
-          <input type="text" class="input" />
+    <div class="box">
+      <div class="title">Create a post</div>
+      <form>
+        <div class="field">
+          <label class="label">title</label>
+          <div class="control">
+            <input type="text" class="input" />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">description</label>
-        <div class="control">
-          <input type="text" class="input" />
+        <div class="field">
+          <label class="label">description</label>
+          <div class="control">
+            <input type="text" class="input" />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">price</label>
-        <div class="control">
-          <input type="number" class="input" />
+        <div class="field">
+          <label class="label">price</label>
+          <div class="control">
+            <input type="number" class="input" />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <div class="file has-name">
-          <label class="file-label">
-            <input class="file-input" type="file" name="resume" />
-            <span class="file-cta">
-              <span class="file-icon">
-                <i class="fas fa-upload"></i>
+        <div class="field">
+          <div class="file has-name">
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume" />
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label"> Choose a file… </span>
               </span>
-              <span class="file-label"> Choose a file… </span>
-            </span>
-            <span class="file-name">
-              Screen Shot 2017-07-29 at 15.54.25.png
-            </span>
-          </label>
+              <span class="file-name">File </span>
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="mt-6 has-text-centered">
-        <button class="button">submit</button>
-      </div>
-    </form>
+        <div class="mt-6 has-text-centered">
+          <button class="button">submit</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

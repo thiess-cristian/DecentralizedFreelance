@@ -1,14 +1,11 @@
 <template>
-  <div class="container">
-    <div class="columns">
-      <div class="column is-6">
-        <Request />
-      </div>
-
-      <div class="column is-6">
-        <button class="button">download</button>
-        <div class="accepted-symbol">symbol</div>
-      </div>
+  <div class="columns">
+    <div class="column">
+      <Request />
+    </div>
+    <div class="column">
+      <button class="button">download</button>
+      <div class="accepted-symbol">symbol</div>
     </div>
   </div>
 </template>
