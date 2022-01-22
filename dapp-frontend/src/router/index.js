@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from "../components/Home.vue"
 import PostSubmit from "../components/PostSubmit.vue"
 import CreatePost from "../components/CreatePost.vue"
@@ -34,10 +34,8 @@ const routes = [
 ]
 
 const router = createRouter({
-    // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-    history: createWebHashHistory(),
-    routes, // short for `routes: routes`
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 
 export default router
-
