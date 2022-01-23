@@ -11,6 +11,9 @@ export default {
   components: {
     Header,
   },
+  beforeCreate() {
+    this.$store.commit("initializeStore");
+  },
 };
 </script>
 
