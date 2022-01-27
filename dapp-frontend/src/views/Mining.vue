@@ -25,7 +25,7 @@
             </div>
           </div>
           <div class="field">
-            <button class="button">Add</button>
+            <button class="button" @click="addMiningStation">Add</button>
           </div>
         </div>
       </div>
@@ -39,6 +39,14 @@ import MiningStation from "../components/MiningStation.vue";
 export default {
   name: "Mining",
   components: { MiningStation },
+  data() {
+    return {
+      miningStationData: "",
+    };
+  },
+  methods: {
+    addMiningStation() {},
+  },
 };
 </script>
 

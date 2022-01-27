@@ -2,11 +2,11 @@
   <div class="container">
     <div class="columns">
       <div class="column">
-        <button class="button">left arrow</button>
+        <button class="button" @click="nextImage">left arrow</button>
       </div>
-      <div class="column">some content</div>
+      <div class="column">some image</div>
       <div class="column">
-        <button class="button">left arrow</button>
+        <button class="button" @click="prevImage">left arrow</button>
       </div>
     </div>
   </div>
@@ -15,6 +15,16 @@
 <script>
 export default {
   name: "InfoSection",
+  data() {
+    return {
+      images: [],
+      currentImage: "",
+    };
+  },
+  methods: {
+    nextImage() {},
+    prevImage() {},
+  },
 };
 </script>
 

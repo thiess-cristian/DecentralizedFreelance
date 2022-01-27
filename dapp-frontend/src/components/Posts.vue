@@ -40,6 +40,14 @@ import Post from "./Post.vue";
 export default {
   name: "Posts",
   components: { Post },
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  methods: {
+    getPosts() {},
+  },
 };
 </script>
 

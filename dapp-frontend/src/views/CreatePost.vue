@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="mt-6 has-text-centered">
-          <button class="button">submit</button>
+          <button class="button" @click="createPost">submit</button>
         </div>
       </form>
     </div>
@@ -46,6 +46,14 @@
 <script>
 export default {
   name: "CreatePost",
+  data() {
+    return {
+      postData: "",
+    };
+  },
+  methods: {
+    createPost() {},
+  },
 };
 </script>
 
