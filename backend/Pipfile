@@ -5,6 +5,12 @@ name = "pypi"
 
 [packages]
 django = "*"
+pillow = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+drf-nested-routers = "*"
+django-debug-toolbar = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 black = "*"
