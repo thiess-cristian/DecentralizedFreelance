@@ -11,23 +11,12 @@
 
     <div class="container">
       <div class="columns is-variable is-multiline">
-        <div class="column is-4-tablet is-3-desktop">
-          <Post />
-        </div>
-        <div class="column is-4-tablet is-3-desktop">
-          <Post />
-        </div>
-        <div class="column is-4-tablet is-3-desktop">
-          <Post />
-        </div>
-        <div class="column is-4-tablet is-3-desktop">
-          <Post />
-        </div>
-        <div class="column is-4-tablet is-3-desktop">
-          <Post />
-        </div>
-        <div class="column is-4-tablet is-3-desktop">
-          <Post />
+        <div
+          class="column is-4-tablet is-3-desktop"
+          v-for="post in posts"
+          v-bind:key="post.id"
+        >
+          <Post :title="post.title" :description="post.description" />
         </div>
       </div>
     </div>
@@ -36,6 +25,7 @@
 
 <script>
 import Post from "./Post.vue";
+import axios from "axios";
 
 export default {
   name: "Posts",
@@ -45,8 +35,22 @@ export default {
       posts: [],
     };
   },
+  mounted() {
+    this.getPosts();
+  },
   methods: {
-    getPosts() {},
+    async getPosts() {
+      axios
+        .get("/freelance/posts")
+        .then((response) => {
+          for (let i = 0; i < response.data.results.length; i++) {
+            this.posts.push(response.data.results[i]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
