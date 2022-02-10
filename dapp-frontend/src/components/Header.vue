@@ -42,13 +42,25 @@
 export default {
   name: "Header",
   methods: {
-    connect() {
+    async connect() {
       const token = "";
       this.$store.commit("setToken", token);
+
+      if (typeof window.ethereum !== "undefined") {
+        console.log("MetaMask is installed!");
+
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const account = accounts[0];
+        console.log(account);
+        this.$store.commit("setAddress", account);
+      }
     },
 
     disconnect() {
       this.$store.commit("removeToken");
+      this.$store.coomit("removeAddress");
     },
   },
 };

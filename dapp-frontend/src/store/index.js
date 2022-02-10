@@ -4,6 +4,7 @@ export default createStore({
   state: {
     user: {
       username: "",
+      address: "",
     },
     isAuthenticated: false,
     token: "",
@@ -24,6 +25,14 @@ export default createStore({
     },
     removeToken(state) {
       state.token = "";
+      state.isAuthenticated = false;
+    },
+    setAddress(state, address) {
+      state.user.address = address;
+      state.isAuthenticated = true;
+    },
+    removeAddress(state) {
+      state.user.address = "";
       state.isAuthenticated = false;
     },
   },

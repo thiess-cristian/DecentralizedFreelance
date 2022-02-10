@@ -13,35 +13,33 @@
     </section>
 
     <section class="section">
-      <div class="contai">
-        <div class="tabs is-boxed">
-          <ul>
-            <li class="is-active" data-target="product-details">
-              <a v-on:click="displayRequestsToFulfilFunction"
-                >Requests to fulfil</a
-              >
-            </li>
-            <li data-target="delivery-info">
-              <a v-on:click="displayRequestsFulfiledFunction"
-                >Requests fulfiled</a
-              >
-            </li>
-          </ul>
+      <div class="tabs is-boxed">
+        <ul>
+          <li id="reqTofulfil" class="is-active" data-target="product-details">
+            <a v-on:click="displayRequestsToFulfilFunction"
+              >Requests to fulfil</a
+            >
+          </li>
+          <li id="reqFulfiled" data-target="delivery-info">
+            <a v-on:click="displayRequestsFulfiledFunction"
+              >Requests fulfiled</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div id="tab-content">
+        <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
+          <RequestToFulfil />
+          <RequestToFulfil />
+          <RequestToFulfil />
         </div>
 
-        <div id="tab-content">
-          <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
-            <RequestToFulfil />
-            <RequestToFulfil />
-            <RequestToFulfil />
-          </div>
-
-          <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
-            <RequestFulfiled />
-            <RequestFulfiled />
-            <RequestFulfiled />
-            <RequestFulfiled />
-          </div>
+        <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
+          <RequestFulfiled />
+          <RequestFulfiled />
+          <RequestFulfiled />
+          <RequestFulfiled />
         </div>
       </div>
     </section>
@@ -65,10 +63,22 @@ export default {
   },
   methods: {
     displayRequestsToFulfilFunction: function () {
+      const tab1 = document.getElementById("reqTofulfil");
+      tab1.classList.toggle("is-active");
+
+      const tab2 = document.getElementById("reqFulfiled");
+      tab2.classList.toggle("is-active");
+
       this.displayRequestsToFulfil = true;
       this.displayRequestsFulfiled = false;
     },
     displayRequestsFulfiledFunction: function () {
+      const tab1 = document.getElementById("reqTofulfil");
+      tab1.classList.toggle("is-active");
+
+      const tab2 = document.getElementById("reqFulfiled");
+      tab2.classList.toggle("is-active");
+
       this.displayRequestsToFulfil = false;
       this.displayRequestsFulfiled = true;
     },

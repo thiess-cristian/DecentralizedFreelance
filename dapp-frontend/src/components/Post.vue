@@ -1,12 +1,12 @@
 <template>
   <div class="card">
     <div class="card-content">
-      <div class="title is-size-4">title</div>
+      <div class="title is-size-4">{{ title }}</div>
       <div class="card-image">
         <img src="../assets/logo.png" />
       </div>
       <div class="block">
-        <p>12.43</p>
+        <p>{{ price }}</p>
       </div>
       <div class="block">
         <div>Tags:</div>
@@ -28,6 +28,12 @@
 <script>
 export default {
   name: "Post",
+  props: {
+    id: Number,
+    title: String,
+    description: String,
+    price: String,
+  },
 };
 </script>
 
