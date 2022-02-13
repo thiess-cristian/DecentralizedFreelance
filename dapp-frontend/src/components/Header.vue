@@ -36,19 +36,27 @@
       </div>
     </div>
   </nav>
+  <div id="notification" class="notification is-warning">
+    <button class="delete" @click="removeNotification"></button>
+    <div class="has-text-centered">Please install Metamask</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "Header",
+  mounted() {
+    if (typeof window.ethereum !== "undefined") {
+      const notification = document.getElementById("notification");
+      notification.classList.add("is-hidden");
+    }
+  },
   methods: {
     async connect() {
       const token = "";
       this.$store.commit("setToken", token);
 
       if (typeof window.ethereum !== "undefined") {
-        console.log("MetaMask is installed!");
-
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -61,6 +69,10 @@ export default {
     disconnect() {
       this.$store.commit("removeToken");
       this.$store.coomit("removeAddress");
+    },
+    removeNotification() {
+      const notification = document.getElementById("notification");
+      notification.classList.add("is-hidden");
     },
   },
 };
