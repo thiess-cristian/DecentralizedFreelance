@@ -31,7 +31,7 @@
           to="/account"
           v-if="$store.state.isAuthenticated"
         >
-          Account
+          {{ $store.state.user.address }}
         </router-link>
       </div>
     </div>
@@ -43,6 +43,10 @@
 </template>
 
 <script>
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ethers } from "ethers";
+
 export default {
   name: "Header",
   mounted() {
@@ -50,25 +54,48 @@ export default {
       const notification = document.getElementById("notification");
       notification.classList.add("is-hidden");
     }
+
+    const address = localStorage.getItem("address");
+
+    if (address != "") {
+      this.$store.commit("setAddress", address);
+    }
   },
   methods: {
+    async getWeb3Modal() {
+      const web3Modal = new Web3Modal({
+        network: "mainnet",
+        cacheProvider: false,
+        providerOptions: {
+          walletconnect: {
+            package: WalletConnectProvider,
+            options: {
+              infuraId: process.env.NEXT_PUBLIC_INFURA_ID,
+            },
+          },
+        },
+      });
+      return web3Modal;
+    },
+
     async connect() {
       const token = "";
       this.$store.commit("setToken", token);
 
-      if (typeof window.ethereum !== "undefined") {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const account = accounts[0];
-        console.log(account);
-        this.$store.commit("setAddress", account);
-      }
+      const web3Modal = await this.getWeb3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const accounts = await provider.listAccounts();
+
+      localStorage.setItem("address", accounts[0]);
+
+      this.$store.commit("setAddress", accounts[0]);
     },
 
     disconnect() {
       this.$store.commit("removeToken");
-      this.$store.coomit("removeAddress");
+      this.$store.commit("removeAddress");
+      localStorage.setItem("address", "");
     },
     removeNotification() {
       const notification = document.getElementById("notification");
