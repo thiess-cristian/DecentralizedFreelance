@@ -3,8 +3,15 @@
     <section class="section">
       <div class="columns">
         <div class="column">
-          <p class="title">Name</p>
-          <p class="title">Address</p>
+          <p class="title">Name: {{ name }}</p>
+          <input
+            class="input"
+            type="text"
+            placeholder="Name"
+            v-model="inputName"
+          />
+          <button class="button" @click="saveNewName">Save</button>
+          <p class="title">Address: {{ $store.state.user.address }}</p>
         </div>
         <div class="column">
           <router-link class="button" to="/mining"> Mining </router-link>
@@ -49,6 +56,11 @@
 <script>
 import RequestToFulfil from "../components/RequestToFulfil.vue";
 import RequestFulfiled from "../components/RequestFulfiled.vue";
+
+import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
+import { ethers } from "ethers";
+import { userProfileManagerAddress } from "../../config";
+
 export default {
   name: "Account",
   components: {
@@ -59,7 +71,11 @@ export default {
     return {
       displayRequestsToFulfil: true,
       displayRequestsFulfiled: false,
+      name: "",
     };
+  },
+  mounted() {
+    this.getSavedName();
   },
   methods: {
     displayRequestsToFulfilFunction: function () {
@@ -81,6 +97,37 @@ export default {
 
       this.displayRequestsToFulfil = false;
       this.displayRequestsFulfiled = true;
+    },
+
+    saveNewName: async function () {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        userProfileManagerAddress,
+        UserProfileManager.abi,
+        signer
+      );
+
+      try {
+        const newUser = await contract.createUser(this.inputName);
+        console.log(newUser);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    getSavedName: async function () {
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = new ethers.Contract(
+        userProfileManagerAddress,
+        UserProfileManager.abi,
+        provider
+      );
+
+      const userAddress = this.$store.state.user.address;
+      const user = await contract.fetchUser(userAddress);
+
+      this.name = user.name;
     },
   },
 };

@@ -1,19 +1,26 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("User", function () {
+  it("Should create an user", async function () {
+    const UserProfileManager = await ethers.getContractFactory(
+      "UserProfileManager"
+    );
+    const user = await UserProfile.deploy("User");
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+    const userName = await user.getName();
+    expect(userName).to.equal("User");
+  });
+});
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+describe("PostsManager", function () {
+  it("Should create a post", async function () {
+    const PostsManager = await ethers.getContractFactory("PostsManager");
+    const manager = await PostsManager.deploy();
+    await manager.createPost("Title", "123");
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    const post = await manager.fetchPost("123");
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    expect(post.title).to.equal("Title");
   });
 });
