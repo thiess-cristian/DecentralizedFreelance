@@ -18,7 +18,11 @@
           v-for="post in posts"
           v-bind:key="post.id"
         >
-          <Post :title="post.title" :description="post.description" />
+          <Post
+            :title="post.title"
+            :description="post.description"
+            :price="post.price"
+          />
         </div>
       </div>
     </div>
@@ -29,6 +33,12 @@
 import Post from "./Post.vue";
 import axios from "axios";
 
+import { postsManagerAddress } from "../../config";
+import PostsManager from "../../artifacts/contracts/PostsManager.sol/PostsManager.json";
+import { ethers } from "ethers";
+
+const ipfsURI = "https://ipfs.io/ipfs/";
+
 export default {
   name: "Posts",
   components: { Post },
@@ -38,10 +48,30 @@ export default {
     };
   },
   mounted() {
-    this.getPosts();
+    const posts = this.getPosts();
+    Promise.all([posts]).then((posts) => {
+      console.log(posts);
+      const postsArray = posts[0];
+      for (const value in postsArray) {
+        console.log(postsArray[value]);
+        const id = postsArray[value];
+        if (id) {
+          const data = this.getIpfsPost(id);
+
+          Promise.all([data]).then((data) => {
+            console.log(data);
+            this.posts.push({
+              title: data[0]["title"],
+              description: data[0]["description"],
+              price: data[0]["price"].toString(),
+            });
+          });
+        }
+      }
+    });
   },
   methods: {
-    async getPosts() {
+    async getPostsBackend() {
       axios
         .get("/freelance/posts")
         .then((response) => {
@@ -52,6 +82,25 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    async getPosts() {
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = new ethers.Contract(
+        postsManagerAddress,
+        PostsManager.abi,
+        provider
+      );
+      const data = await contract.fetchPosts();
+      const paths = data.map((d) => d[3]);
+      return paths;
+    },
+
+    async getIpfsPost(id) {
+      const ipfsUrl = `${ipfsURI}/${id}`;
+      const response = await fetch(ipfsUrl);
+      const data = await response.json();
+
+      return data;
     },
   },
 };

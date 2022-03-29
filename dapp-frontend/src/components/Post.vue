@@ -6,7 +6,7 @@
         <img src="../assets/logo.png" />
       </div>
       <div class="block">
-        <p>{{ price }}</p>
+        <p>price: {{ price }}</p>
       </div>
       <div class="block">
         <div>Tags:</div>
