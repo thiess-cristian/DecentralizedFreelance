@@ -22,6 +22,7 @@
             :title="post.title"
             :description="post.description"
             :price="post.price"
+            :image="post.image"
           />
         </div>
       </div>
@@ -31,7 +32,6 @@
 
 <script>
 import Post from "./Post.vue";
-import axios from "axios";
 
 import { postsManagerAddress } from "../../config";
 import PostsManager from "../../artifacts/contracts/PostsManager.sol/PostsManager.json";
@@ -53,17 +53,22 @@ export default {
       console.log(posts);
       const postsArray = posts[0];
       for (const value in postsArray) {
-        console.log(postsArray[value]);
         const id = postsArray[value];
         if (id) {
           const data = this.getIpfsPost(id);
 
           Promise.all([data]).then((data) => {
             console.log(data);
+            let imageURL = "";
+            if (data[0]["image"]) {
+              imageURL = `${ipfsURI}/${data[0]["image"]}`;
+            }
+
             this.posts.push({
               title: data[0]["title"],
               description: data[0]["description"],
               price: data[0]["price"].toString(),
+              image: imageURL,
             });
           });
         }
@@ -71,18 +76,6 @@ export default {
     });
   },
   methods: {
-    async getPostsBackend() {
-      axios
-        .get("/freelance/posts")
-        .then((response) => {
-          for (let i = 0; i < response.data.results.length; i++) {
-            this.posts.push(response.data.results[i]);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     async getPosts() {
       const provider = new ethers.providers.JsonRpcProvider();
       const contract = new ethers.Contract(

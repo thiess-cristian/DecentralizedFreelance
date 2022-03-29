@@ -3,7 +3,8 @@
     <div class="card-content">
       <div class="title is-size-4">{{ title }}</div>
       <div class="card-image">
-        <img src="../assets/logo.png" />
+        img: {{ image }}
+        <img :src="image" />
       </div>
       <div class="block">
         <p>price: {{ price }}</p>
@@ -33,6 +34,7 @@ export default {
     title: String,
     description: String,
     price: String,
+    image: String,
   },
 };
 </script>

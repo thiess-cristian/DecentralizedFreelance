@@ -23,7 +23,12 @@
       <div class="field">
         <div class="file has-name">
           <label class="file-label">
-            <input class="file-input" type="file" name="resume" />
+            <input
+              class="file-input"
+              type="file"
+              name="resume"
+              @change="uploadImage"
+            />
             <span class="file-cta">
               <span class="file-icon">
                 <i class="fas fa-upload"></i>
@@ -56,6 +61,7 @@ export default {
       price: "",
       description: "",
       client: "",
+      image: "",
     };
   },
   mounted() {
@@ -69,11 +75,16 @@ export default {
     },
     async savePostToIpfs() {
       try {
+        const image = await this.client.add(this.image);
+
+        console.log(image);
+
         const file = await this.client.add(
           JSON.stringify({
             title: this.title,
             description: this.description,
             price: this.price,
+            image: image.path,
           })
         );
         return file.path;
@@ -96,6 +107,11 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    uploadImage(e) {
+      const image = e.target.files[0];
+      this.image = image;
     },
   },
 };
