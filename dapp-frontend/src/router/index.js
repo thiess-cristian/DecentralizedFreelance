@@ -12,9 +12,10 @@ const routes = [
     component: Home,
   },
   {
-    path: "/post",
+    path: "/post/:id",
     name: "Post",
     component: PostSubmit,
+    props: true,
   },
   {
     path: "/create_post",

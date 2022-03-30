@@ -20,7 +20,11 @@
     </div>
     <footer class="card-footer">
       <div class="card-footer-item">
-        <router-link to="/post" class="has-text-grey">info</router-link>
+        <router-link
+          :to="{ name: 'Post', params: { id: id } }"
+          class="has-text-grey"
+          >info</router-link
+        >
       </div>
     </footer>
   </div>
@@ -30,7 +34,7 @@
 export default {
   name: "Post",
   props: {
-    id: Number,
+    id: String,
     title: String,
     description: String,
     price: String,

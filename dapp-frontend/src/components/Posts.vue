@@ -19,6 +19,7 @@
           v-bind:key="post.id"
         >
           <Post
+            :id="post.id"
             :title="post.title"
             :description="post.description"
             :price="post.price"
@@ -65,6 +66,7 @@ export default {
             }
 
             this.posts.push({
+              id: id,
               title: data[0]["title"],
               description: data[0]["description"],
               price: data[0]["price"].toString(),
