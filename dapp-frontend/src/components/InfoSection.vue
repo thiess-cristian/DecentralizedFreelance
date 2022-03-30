@@ -4,7 +4,9 @@
       <div class="column">
         <button class="button" @click="nextImage">left arrow</button>
       </div>
-      <div class="column">some image</div>
+      <div class="column">
+        <img :src="image" />
+      </div>
       <div class="column">
         <button class="button" @click="prevImage">left arrow</button>
       </div>
@@ -15,6 +17,9 @@
 <script>
 export default {
   name: "InfoSection",
+  props: {
+    image: String,
+  },
   data() {
     return {
       images: [],

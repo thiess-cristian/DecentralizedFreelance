@@ -124,8 +124,6 @@ export default {
         provider
       );
 
-      console.log(contract);
-      console.log(this.$store.state.user.address);
       const userAddress = this.$store.state.user.address;
       const user = await contract.fetchUser(userAddress);
 

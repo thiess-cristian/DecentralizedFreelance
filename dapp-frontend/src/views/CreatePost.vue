@@ -70,15 +70,11 @@ export default {
   methods: {
     async createPost() {
       const ipfsHash = await this.savePostToIpfs();
-      console.log(ipfsHash);
       await this.savePostToBlockchain(ipfsHash);
     },
     async savePostToIpfs() {
       try {
         const image = await this.client.add(this.image);
-
-        console.log(image);
-
         const file = await this.client.add(
           JSON.stringify({
             title: this.title,
@@ -102,8 +98,7 @@ export default {
       );
 
       try {
-        const post = await contract.createPost(this.title, ipfsHash);
-        console.log(post);
+        await contract.createPost(this.title, ipfsHash);
       } catch (error) {
         console.log(error);
       }

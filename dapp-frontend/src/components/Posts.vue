@@ -38,7 +38,7 @@ import { postsManagerAddress } from "../../config";
 import PostsManager from "../../artifacts/contracts/PostsManager.sol/PostsManager.json";
 import { ethers } from "ethers";
 
-const ipfsURI = "https://ipfs.io/ipfs/";
+const ipfsURI = "https://ipfs.io/ipfs";
 
 export default {
   name: "Posts",
@@ -51,7 +51,6 @@ export default {
   mounted() {
     const posts = this.getPosts();
     Promise.all([posts]).then((posts) => {
-      console.log(posts);
       const postsArray = posts[0];
       for (const value in postsArray) {
         const id = postsArray[value];
@@ -59,7 +58,6 @@ export default {
           const data = this.getIpfsPost(id);
 
           Promise.all([data]).then((data) => {
-            console.log(data);
             let imageURL = "";
             if (data[0]["image"]) {
               imageURL = `${ipfsURI}/${data[0]["image"]}`;
