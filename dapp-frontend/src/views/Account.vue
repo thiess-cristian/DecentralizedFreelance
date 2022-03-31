@@ -35,16 +35,23 @@
 
       <div id="tab-content">
         <div v-if="displayRequestFromUser" class="requests-to-fulfil">
-          <RequestFromUser />
-          <RequestFromUser />
-          <RequestFromUser />
+          <div v-for="request in requestsFromUser" v-bind:key="request.id">
+            <RequestFromUser
+              :owner="request.owner"
+              :post="request.post"
+              :request="request.request"
+            />
+          </div>
         </div>
 
         <div v-if="displayRequestToUser" class="requests-fulfiled">
-          <RequestToUser />
-          <RequestToUser />
-          <RequestToUser />
-          <RequestToUser />
+          <div v-for="request in requestsToUser" v-bind:key="request.id">
+            <RequestToUser
+              :owner="request.owner"
+              :post="request.post"
+              :request="request.request"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -56,8 +63,9 @@ import RequestToUser from "../components/RequestToUser.vue";
 import RequestFromUser from "../components/RequestFromUser.vue";
 
 import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
+import RequestManager from "../../artifacts/contracts/RequestManager.sol/RequestManager.json";
 import { ethers } from "ethers";
-import { userProfileManagerAddress } from "../../config";
+import { userProfileManagerAddress, requestManagerAddress } from "../../config";
 
 export default {
   name: "Account",
@@ -71,13 +79,18 @@ export default {
       displayRequestFromUser: true,
       name: "",
       inputName: "",
+      requestsFromUser: [],
+      requestsToUser: [],
     };
   },
-  mounted() {
+  async mounted() {
     this.getSavedName();
+
+    this.requestsToUser = await this.getRequestsToUser();
+    this.requestsFromUser = await this.getRequestsFromUser();
   },
   methods: {
-    displayRequestFromUserFunction: function () {
+    displayRequestFromUserFunction() {
       const tab1 = document.getElementById("reqTofulfil");
       tab1.classList.toggle("is-active");
 
@@ -87,7 +100,7 @@ export default {
       this.displayRequestToUser = false;
       this.displayRequestFromUser = true;
     },
-    displayRequestToUserFunction: function () {
+    displayRequestToUserFunction() {
       const tab1 = document.getElementById("reqTofulfil");
       tab1.classList.toggle("is-active");
 
@@ -98,7 +111,7 @@ export default {
       this.displayRequestFromUser = false;
     },
 
-    saveNewName: async function () {
+    async saveNewName() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
@@ -115,7 +128,7 @@ export default {
       }
     },
 
-    getSavedName: async function () {
+    async getSavedName() {
       const provider = new ethers.providers.JsonRpcProvider();
       const contract = new ethers.Contract(
         userProfileManagerAddress,
@@ -127,6 +140,30 @@ export default {
       const user = await contract.fetchUser(userAddress);
 
       this.name = user.name;
+    },
+
+    async getRequestsToUser() {
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = new ethers.Contract(
+        requestManagerAddress,
+        RequestManager.abi,
+        provider
+      );
+
+      const data = await contract.getAllRequests();
+      let returnedData = [];
+      for (let entry in data) {
+        returnedData.push({
+          owner: data[entry]["owner"],
+          post: data[entry]["post"],
+          request: data[entry]["request"],
+        });
+      }
+
+      return returnedData;
+    },
+    async getRequestsFromUser() {
+      return this.getRequestsToUser();
     },
   },
 };

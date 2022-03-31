@@ -46,7 +46,7 @@ contract PostsManager {
 
         Post[] memory posts = new Post[](itemCount);
         for (uint256 i = 0; i < itemCount; i++) {
-            uint256 currentId = i + 1;
+            uint256 currentId = i;
             Post storage currentItem = idToPost[currentId];
             posts[currentIndex] = currentItem;
             currentIndex += 1;

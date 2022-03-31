@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column">
-      <Request />
+      <Request :owner="owner" :post="post" :request="request" />
     </div>
     <div class="column">
       <button class="button">download</button>
@@ -17,6 +17,11 @@ export default {
   name: "RequestToUser.vue",
   components: {
     Request,
+  },
+  props: {
+    owner: String,
+    post: String,
+    request: String,
   },
 };
 </script>

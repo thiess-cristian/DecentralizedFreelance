@@ -1,7 +1,7 @@
 <template>
   <div class="columns">
     <div class="column is-size-6">
-      <Request />
+      <Request :owner="owner" :post="post" :request="request" />
     </div>
     <div class="column is-size-6">
       <div class="file has-name">
@@ -28,6 +28,11 @@ export default {
   name: "RequestFromUser",
   components: {
     Request,
+  },
+  props: {
+    owner: String,
+    post: String,
+    request: String,
   },
 };
 </script>

@@ -72,14 +72,14 @@ export default {
       const client = create("https://ipfs.infura.io:5001/api/v0");
 
       try {
-        const request = await client.add(
+        const requestIpfs = await client.add(
           JSON.stringify({
-            postHash: this.$route.params.id,
             request: this.request,
+            postHash: this.$route.params.id,
           })
         );
-
-        return request.path;
+        console.log(requestIpfs.path);
+        return requestIpfs.path;
       } catch (error) {
         console.log(error);
       }
