@@ -6,6 +6,18 @@
 const hre = require("hardhat");
 const fs = require("fs");
 
+async function deployRequestManager() {
+  const requestManagerFactory = await hre.ethers.getContractFactory(
+    "RequestManager"
+  );
+  const requestManager = await requestManagerFactory.deploy();
+
+  await requestManager.deployed();
+  console.log("RequestManager deployed to:", requestManager.address);
+
+  return requestManager.address;
+}
+
 async function main() {
   /* these two lines deploy the contract to the network */
   const PostsManager = await hre.ethers.getContractFactory("PostsManager");
@@ -22,12 +34,16 @@ async function main() {
   console.log("UserProfileManager deployed to:", userProfileManager.address);
   /* this code writes the contract addresses to a local */
   /* file named config.js that we can use in the app */
+
+  const requestManagerAddress = await deployRequestManager();
+
   fs.writeFileSync(
     "./config.js",
     `
   export const postsManagerAddress = "${postsManager.address}"
   export const ownerAddress = "${postsManager.signer.address}"
   export const userProfileManagerAddress ="${userProfileManager.address}"
+  export const requestManagerAddress="${requestManagerAddress}"
   `
   );
 }

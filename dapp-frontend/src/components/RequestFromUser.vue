@@ -25,7 +25,7 @@
 import Request from "./Request.vue";
 
 export default {
-  name: "RequestToFulfil",
+  name: "RequestFromUser",
   components: {
     Request,
   },

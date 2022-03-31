@@ -14,7 +14,7 @@
 import Request from "./Request.vue";
 
 export default {
-  name: "RequestFulfiled.vue",
+  name: "RequestToUser.vue",
   components: {
     Request,
   },

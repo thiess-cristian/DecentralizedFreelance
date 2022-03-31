@@ -23,30 +23,28 @@
       <div class="tabs is-boxed">
         <ul>
           <li id="reqTofulfil" class="is-active" data-target="product-details">
-            <a v-on:click="displayRequestsToFulfilFunction"
+            <a v-on:click="displayRequestFromUserFunction"
               >Requests to fulfil</a
             >
           </li>
           <li id="reqFulfiled" data-target="delivery-info">
-            <a v-on:click="displayRequestsFulfiledFunction"
-              >Requests fulfiled</a
-            >
+            <a v-on:click="displayRequestToUserFunction">Requests fulfiled</a>
           </li>
         </ul>
       </div>
 
       <div id="tab-content">
-        <div v-if="displayRequestsToFulfil" class="requests-to-fulfil">
-          <RequestToFulfil />
-          <RequestToFulfil />
-          <RequestToFulfil />
+        <div v-if="displayRequestFromUser" class="requests-to-fulfil">
+          <RequestFromUser />
+          <RequestFromUser />
+          <RequestFromUser />
         </div>
 
-        <div v-if="displayRequestsFulfiled" class="requests-fulfiled">
-          <RequestFulfiled />
-          <RequestFulfiled />
-          <RequestFulfiled />
-          <RequestFulfiled />
+        <div v-if="displayRequestToUser" class="requests-fulfiled">
+          <RequestToUser />
+          <RequestToUser />
+          <RequestToUser />
+          <RequestToUser />
         </div>
       </div>
     </section>
@@ -54,8 +52,8 @@
 </template>
 
 <script>
-import RequestToFulfil from "../components/RequestToFulfil.vue";
-import RequestFulfiled from "../components/RequestFulfiled.vue";
+import RequestToUser from "../components/RequestToUser.vue";
+import RequestFromUser from "../components/RequestFromUser.vue";
 
 import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
 import { ethers } from "ethers";
@@ -64,39 +62,40 @@ import { userProfileManagerAddress } from "../../config";
 export default {
   name: "Account",
   components: {
-    RequestToFulfil,
-    RequestFulfiled,
+    RequestToUser,
+    RequestFromUser,
   },
   data() {
     return {
-      displayRequestsToFulfil: true,
-      displayRequestsFulfiled: false,
+      displayRequestToUser: false,
+      displayRequestFromUser: true,
       name: "",
+      inputName: "",
     };
   },
   mounted() {
     this.getSavedName();
   },
   methods: {
-    displayRequestsToFulfilFunction: function () {
+    displayRequestFromUserFunction: function () {
       const tab1 = document.getElementById("reqTofulfil");
       tab1.classList.toggle("is-active");
 
       const tab2 = document.getElementById("reqFulfiled");
       tab2.classList.toggle("is-active");
 
-      this.displayRequestsToFulfil = true;
-      this.displayRequestsFulfiled = false;
+      this.displayRequestToUser = false;
+      this.displayRequestFromUser = true;
     },
-    displayRequestsFulfiledFunction: function () {
+    displayRequestToUserFunction: function () {
       const tab1 = document.getElementById("reqTofulfil");
       tab1.classList.toggle("is-active");
 
       const tab2 = document.getElementById("reqFulfiled");
       tab2.classList.toggle("is-active");
 
-      this.displayRequestsToFulfil = false;
-      this.displayRequestsFulfiled = true;
+      this.displayRequestToUser = true;
+      this.displayRequestFromUser = false;
     },
 
     saveNewName: async function () {

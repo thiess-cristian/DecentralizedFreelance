@@ -60,8 +60,8 @@ export default {
       title: "",
       price: "",
       description: "",
-      client: "",
       image: "",
+      client: "",
     };
   },
   mounted() {
