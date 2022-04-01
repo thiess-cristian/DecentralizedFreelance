@@ -18,6 +18,15 @@ async function deployRequestManager() {
   return requestManager.address;
 }
 
+async function deployFileManager() {
+  const fileManagerFactory = await hre.ethers.getContractFactory("FileManager");
+  const fileManager = await fileManagerFactory.deploy();
+
+  await fileManager.deployed();
+  console.log("FileManager deployed to:", fileManager.address);
+  return fileManager.address;
+}
+
 async function main() {
   /* these two lines deploy the contract to the network */
   const PostsManager = await hre.ethers.getContractFactory("PostsManager");
@@ -36,6 +45,7 @@ async function main() {
   /* file named config.js that we can use in the app */
 
   const requestManagerAddress = await deployRequestManager();
+  const fileManagerAddress = await deployFileManager();
 
   fs.writeFileSync(
     "./config.js",
@@ -44,6 +54,7 @@ async function main() {
   export const ownerAddress = "${postsManager.signer.address}"
   export const userProfileManagerAddress ="${userProfileManager.address}"
   export const requestManagerAddress="${requestManagerAddress}"
+  export const fileManagerAddress="${fileManagerAddress}"
   `
   );
 }
