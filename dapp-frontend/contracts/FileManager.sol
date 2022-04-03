@@ -40,4 +40,16 @@ contract FileManager {
 
         emit fileCreated(fileId, hash);
     }
+
+    function getAllFiles() public view returns (File[] memory) {
+        uint256 itemCount = _fileIds.current();
+
+        File[] memory files = new File[](itemCount);
+
+        for (uint256 i = 0; i < itemCount; i++) {
+            File storage currentItem = idToFile[i];
+            files[i] = currentItem;
+        }
+        return files;
+    }
 }
