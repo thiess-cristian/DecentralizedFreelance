@@ -48,16 +48,15 @@ export default {
       request: "",
     };
   },
-  mounted() {
-    const post = this.getIpfsPost(this.$route.params.id);
-    Promise.resolve(post).then((post) => {
-      this.title = post["title"];
-      const imageURL = `${ipfsURI}/${post["image"]}`;
-      this.image = imageURL;
-      this.price = post["price"];
-      this.description = post["description"];
-      console.log(post);
-    });
+  async mounted() {
+    const post = await this.getIpfsPost(this.$route.params.id);
+
+    this.title = post["title"];
+    const imageURL = `${ipfsURI}/${post["image"]}`;
+    this.image = imageURL;
+    this.price = post["price"];
+    this.description = post["description"];
+    console.log(post);
   },
   methods: {
     async getIpfsPost(id) {

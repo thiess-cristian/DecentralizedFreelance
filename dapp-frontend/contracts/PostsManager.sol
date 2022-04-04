@@ -42,14 +42,11 @@ contract PostsManager {
 
     function fetchPosts() public view returns (Post[] memory) {
         uint256 itemCount = _postIds.current();
-        uint256 currentIndex = 0;
 
         Post[] memory posts = new Post[](itemCount);
         for (uint256 i = 0; i < itemCount; i++) {
-            uint256 currentId = i;
-            Post storage currentItem = idToPost[currentId];
-            posts[currentIndex] = currentItem;
-            currentIndex += 1;
+            Post storage currentItem = idToPost[i];
+            posts[i] = currentItem;
         }
         return posts;
     }

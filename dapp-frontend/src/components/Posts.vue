@@ -48,33 +48,29 @@ export default {
       posts: [],
     };
   },
-  mounted() {
-    const posts = this.getPosts();
-    Promise.all([posts]).then((posts) => {
-      const postsArray = posts[0];
-      for (const value in postsArray) {
-        const id = postsArray[value];
-        if (id) {
-          const data = this.getIpfsPost(id);
+  async mounted() {
+    const posts = await this.getPosts();
 
-          Promise.all([data]).then((data) => {
-            let imageURL = "";
-            if (data[0]["image"]) {
-              imageURL = `${ipfsURI}/${data[0]["image"]}`;
-            }
+    for (const value in posts) {
+      const id = posts[value];
+      if (id) {
+        const data = await this.getIpfsPost(id);
+        let imageURL = "";
 
-            this.posts.push({
-              id: id,
-              title: data[0]["title"],
-              description: data[0]["description"],
-              price: data[0]["price"].toString(),
-              image: imageURL,
-            });
-          });
+        if (data["image"]) {
+          imageURL = `${ipfsURI}/${data["image"]}`;
         }
+        this.posts.push({
+          id: id,
+          title: data["title"],
+          description: data["description"],
+          price: data["price"].toString(),
+          image: imageURL,
+        });
       }
-    });
+    }
   },
+
   methods: {
     async getPosts() {
       const provider = new ethers.providers.JsonRpcProvider();

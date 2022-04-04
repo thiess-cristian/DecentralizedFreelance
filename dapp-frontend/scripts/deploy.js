@@ -27,32 +27,44 @@ async function deployFileManager() {
   return fileManager.address;
 }
 
-async function main() {
-  /* these two lines deploy the contract to the network */
+async function deployPostsManager() {
   const PostsManager = await hre.ethers.getContractFactory("PostsManager");
   const postsManager = await PostsManager.deploy();
 
   await postsManager.deployed();
   console.log("PostsManager deployed to:", postsManager.address);
 
+  return postsManager.address, postsManager.signer.address;
+}
+
+async function deployUserProfileManager() {
   const UserProfileManager = await hre.ethers.getContractFactory(
     "UserProfileManager"
   );
   const userProfileManager = await UserProfileManager.deploy();
   await userProfileManager.deployed();
   console.log("UserProfileManager deployed to:", userProfileManager.address);
+
+  return userProfileManager.address;
+}
+
+async function main() {
+  /* these two lines deploy the contract to the network */
+
   /* this code writes the contract addresses to a local */
   /* file named config.js that we can use in the app */
 
+  const [postsManagerAddress, ownerAddress] = await deployPostsManager();
+  const userProfileManagerAddress = await deployUserProfileManager();
   const requestManagerAddress = await deployRequestManager();
   const fileManagerAddress = await deployFileManager();
 
   fs.writeFileSync(
     "./config.js",
     `
-  export const postsManagerAddress = "${postsManager.address}"
-  export const ownerAddress = "${postsManager.signer.address}"
-  export const userProfileManagerAddress ="${userProfileManager.address}"
+  export const postsManagerAddress = "${postsManagerAddress}"
+  export const ownerAddress = "${ownerAddress}"
+  export const userProfileManagerAddress ="${userProfileManagerAddress}"
   export const requestManagerAddress="${requestManagerAddress}"
   export const fileManagerAddress="${fileManagerAddress}"
   `

@@ -45,14 +45,11 @@ contract RequestManager {
 
     function getAllRequests() public view returns (Request[] memory) {
         uint256 itemCount = _requestIds.current();
-        uint256 currentIndex = 0;
 
         Request[] memory requests = new Request[](itemCount);
         for (uint256 i = 0; i < itemCount; i++) {
-            uint256 currentId = i;
-            Request storage currentItem = idToRequest[currentId];
-            requests[currentIndex] = currentItem;
-            currentIndex += 1;
+            Request storage currentItem = idToRequest[i];
+            requests[i] = currentItem;
         }
 
         return requests;
