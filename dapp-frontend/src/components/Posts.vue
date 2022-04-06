@@ -24,6 +24,7 @@
             :description="post.description"
             :price="post.price"
             :image="post.image"
+            :user="post.user"
           />
         </div>
       </div>
@@ -50,25 +51,49 @@ export default {
   },
   async mounted() {
     const posts = await this.getPosts();
+    console.log(posts);
 
-    for (const value in posts) {
-      const id = posts[value];
-      if (id) {
-        const data = await this.getIpfsPost(id);
-        let imageURL = "";
+    for (let i in posts) {
+      console.log(posts[i]);
+      const post = posts[i];
+      const owner = post["owner"];
+      const contentHash = post["content"];
+      const id = post["id"];
 
-        if (data["image"]) {
-          imageURL = `${ipfsURI}/${data["image"]}`;
-        }
-        this.posts.push({
-          id: id,
-          title: data["title"],
-          description: data["description"],
-          price: data["price"].toString(),
-          image: imageURL,
-        });
-      }
+      const ipfsData = await this.getIpfsPost(contentHash);
+      const imageUrl = `${ipfsURI}/${ipfsData["image"]}`;
+      this.posts.push({
+        id: id.toString(),
+        description: ipfsData["description"],
+        title: ipfsData["title"],
+        price: ipfsData["price"].toString(),
+        image: imageUrl,
+        user: owner,
+      });
     }
+
+    // for (const value in posts) {
+    //   const id = posts[value];
+    //   console.log(value);
+    //   if (id) {
+    //     const data = await this.getIpfsPost(id);
+    //     let imageURL = "";
+
+    //     if (data["image"]) {
+    //       imageURL = `${ipfsURI}/${data["image"]}`;
+    //     }
+
+    //     console.log(posts);
+
+    //     this.posts.push({
+    //       id: id,
+    //       title: data["title"],
+    //       description: data["description"],
+    //       price: data["price"].toString(),
+    //       image: imageURL,
+    //     });
+    //   }
+    // }
   },
 
   methods: {
@@ -80,8 +105,8 @@ export default {
         provider
       );
       const data = await contract.fetchPosts();
-      const paths = data.map((d) => d[3]);
-      return paths;
+
+      return data;
     },
 
     async getIpfsPost(id) {

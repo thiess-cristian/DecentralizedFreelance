@@ -17,8 +17,6 @@ import { fileManagerAddress } from "../../config";
 import FileManager from "../../artifacts/contracts/FileManager.sol/FileManager.json";
 import { ethers } from "ethers";
 
-//import { create } from "ipfs-http-client";
-
 export default {
   name: "RequestToUser.vue",
   components: {
@@ -31,10 +29,6 @@ export default {
   },
   methods: {
     async downloadFile() {
-      //console.log(this.owner);
-      //console.log(this.post);
-      //console.log(this.request);
-
       const data = await this.getFileHash();
       console.log(data[0]);
 
@@ -42,7 +36,6 @@ export default {
     },
 
     async downloadFromIpfs(hash) {
-      //const client = create("https://ipfs.infura.io:5001/api/v0");
       console.log("hash", hash);
       const ipfsURI = "https://ipfs.io/ipfs";
       const ipfsUrl = `${ipfsURI}/${hash}`;

@@ -9,6 +9,7 @@
       <div class="block">
         <p>price: {{ price }}</p>
       </div>
+      <div>Made by: {{ userName }}</div>
       <div class="block">
         <div>Tags:</div>
         <div class="tags">
@@ -31,6 +32,10 @@
 </template>
 
 <script>
+import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
+import { ethers } from "ethers";
+import { userProfileManagerAddress } from "../../config";
+
 export default {
   name: "Post",
   props: {
@@ -38,7 +43,32 @@ export default {
     title: String,
     description: String,
     price: String,
+    user: String,
     image: String,
+  },
+  data() {
+    return {
+      userName: "",
+    };
+  },
+  async mounted() {
+    this.getSavedName();
+  },
+  methods: {
+    async getSavedName() {
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = new ethers.Contract(
+        userProfileManagerAddress,
+        UserProfileManager.abi,
+        provider
+      );
+
+      const userAddress = this.$props.user;
+      const user = await contract.fetchUser(userAddress);
+
+      console.log(user.name);
+      this.userName = user.name;
+    },
   },
 };
 </script>
