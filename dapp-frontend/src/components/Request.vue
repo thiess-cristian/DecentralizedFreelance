@@ -4,6 +4,10 @@
       <div class="title">{{ title }}</div>
     </div>
     <div class="block">
+      <p>From: {{ owner }}</p>
+      <p>Name: {{ userName }}</p>
+    </div>
+    <div class="block">
       <p>Price: {{ price }}</p>
     </div>
     <button class="button" v-on:click="displayDescriptionFunction">
@@ -14,6 +18,10 @@
 </template>
 
 <script>
+import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
+import { ethers } from "ethers";
+import { userProfileManagerAddress } from "../../config";
+
 const ipfsURI = "https://ipfs.io/ipfs";
 
 export default {
@@ -24,6 +32,7 @@ export default {
       title: "",
       price: "",
       requestDescription: "",
+      userName: "",
     };
   },
   props: {
@@ -38,6 +47,8 @@ export default {
     this.title = dataFromPost["title"];
     this.price = dataFromPost["price"];
     this.requestDescription = dataFromRequest["request"];
+
+    this.getSavedName();
   },
   methods: {
     displayDescriptionFunction() {
@@ -50,6 +61,19 @@ export default {
       const data = await response.json();
 
       return data;
+    },
+    async getSavedName() {
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = new ethers.Contract(
+        userProfileManagerAddress,
+        UserProfileManager.abi,
+        provider
+      );
+
+      const userAddress = this.$props.owner;
+      const user = await contract.fetchUser(userAddress);
+
+      this.userName = user.name;
     },
   },
 };

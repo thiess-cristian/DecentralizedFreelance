@@ -51,19 +51,17 @@ export default {
   },
   async mounted() {
     const posts = await this.getPosts();
-    console.log(posts);
 
     for (let i in posts) {
-      console.log(posts[i]);
       const post = posts[i];
       const owner = post["owner"];
       const contentHash = post["content"];
-      const id = post["id"];
+      //const id = post["id"];
 
       const ipfsData = await this.getIpfsPost(contentHash);
       const imageUrl = `${ipfsURI}/${ipfsData["image"]}`;
       this.posts.push({
-        id: id.toString(),
+        id: contentHash,
         description: ipfsData["description"],
         title: ipfsData["title"],
         price: ipfsData["price"].toString(),
@@ -71,29 +69,6 @@ export default {
         user: owner,
       });
     }
-
-    // for (const value in posts) {
-    //   const id = posts[value];
-    //   console.log(value);
-    //   if (id) {
-    //     const data = await this.getIpfsPost(id);
-    //     let imageURL = "";
-
-    //     if (data["image"]) {
-    //       imageURL = `${ipfsURI}/${data["image"]}`;
-    //     }
-
-    //     console.log(posts);
-
-    //     this.posts.push({
-    //       id: id,
-    //       title: data["title"],
-    //       description: data["description"],
-    //       price: data["price"].toString(),
-    //       image: imageURL,
-    //     });
-    //   }
-    // }
   },
 
   methods: {

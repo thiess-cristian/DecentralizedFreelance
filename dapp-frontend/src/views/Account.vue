@@ -159,7 +159,6 @@ export default {
           request: data[entry]["request"],
         });
       }
-
       return returnedData;
     },
     async getRequestsFromUser() {

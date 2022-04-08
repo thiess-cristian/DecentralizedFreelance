@@ -56,14 +56,12 @@ export default {
     this.image = imageURL;
     this.price = post["price"];
     this.description = post["description"];
-    console.log(post);
   },
   methods: {
     async getIpfsPost(id) {
       const ipfsUrl = `${ipfsURI}/${id}`;
       const response = await fetch(ipfsUrl);
       const data = await response.json();
-      console.log(data);
       return data;
     },
 
@@ -77,7 +75,6 @@ export default {
             postHash: this.$route.params.id,
           })
         );
-        console.log(requestIpfs.path);
         return requestIpfs.path;
       } catch (error) {
         console.log(error);
