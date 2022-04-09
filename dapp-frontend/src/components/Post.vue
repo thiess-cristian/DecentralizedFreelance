@@ -3,8 +3,8 @@
     <div class="card-content">
       <div class="title is-size-4">{{ title }}</div>
       <div class="card-image">
-        img: {{ image }}
-        <img :src="image" />
+        img: {{ imageUrl }}
+        <img :src="imageUrl" />
       </div>
       <div class="block">
         <p>price: {{ price }}</p>
@@ -22,7 +22,7 @@
     <footer class="card-footer">
       <div class="card-footer-item">
         <router-link
-          :to="{ name: 'Post', params: { id: id } }"
+          :to="{ name: 'Post', params: { id: postAddress } }"
           class="has-text-grey"
           >info</router-link
         >
@@ -40,11 +40,12 @@ export default {
   name: "Post",
   props: {
     id: String,
+    postAddress: String,
     title: String,
     description: String,
     price: String,
-    user: String,
-    image: String,
+    userAddress: String,
+    imageUrl: String,
   },
   data() {
     return {
@@ -63,10 +64,9 @@ export default {
         provider
       );
 
-      const userAddress = this.$props.user;
+      const userAddress = this.$props.userAddress;
       const user = await contract.fetchUser(userAddress);
 
-      console.log(user.name);
       this.userName = user.name;
     },
   },

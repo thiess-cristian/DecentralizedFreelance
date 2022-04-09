@@ -1,7 +1,11 @@
 <template>
   <div class="columns">
     <div class="column">
-      <Request :owner="owner" :post="post" :request="request" />
+      <Request
+        :userAddress="postOwnerAdddress"
+        :postIpfsAddress="postIpfsAddress"
+        :requestIpfsAddress="requestIpfsAddress"
+      />
     </div>
     <div class="column">
       <button class="button" @click="downloadFile">download</button>
@@ -23,9 +27,9 @@ export default {
     Request,
   },
   props: {
-    owner: String,
-    post: String,
-    request: String,
+    postOwnerAdddress: String,
+    postIpfsAddress: String,
+    requestIpfsAddress: String,
   },
   methods: {
     async downloadFile() {

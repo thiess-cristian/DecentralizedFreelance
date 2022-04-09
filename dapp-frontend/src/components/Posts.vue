@@ -20,11 +20,12 @@
         >
           <Post
             :id="post.id"
+            :postAddress="post.postAddress"
             :title="post.title"
             :description="post.description"
             :price="post.price"
-            :image="post.image"
-            :user="post.user"
+            :imageUrl="post.imageUrl"
+            :userAddress="post.userAddress"
           />
         </div>
       </div>
@@ -51,22 +52,22 @@ export default {
   },
   async mounted() {
     const posts = await this.getPosts();
-
     for (let i in posts) {
       const post = posts[i];
       const owner = post["owner"];
       const contentHash = post["content"];
-      //const id = post["id"];
+      const id = post["id"];
 
       const ipfsData = await this.getIpfsPost(contentHash);
       const imageUrl = `${ipfsURI}/${ipfsData["image"]}`;
       this.posts.push({
-        id: contentHash,
+        id: id.toString(),
+        postAddress: contentHash,
         description: ipfsData["description"],
         title: ipfsData["title"],
         price: ipfsData["price"].toString(),
-        image: imageUrl,
-        user: owner,
+        imageUrl: imageUrl,
+        userAddress: owner,
       });
     }
   },

@@ -4,7 +4,7 @@
       <div class="title">{{ title }}</div>
     </div>
     <div class="block">
-      <p>From: {{ owner }}</p>
+      <p>From: {{ userAddress }}</p>
       <p>Name: {{ userName }}</p>
     </div>
     <div class="block">
@@ -36,13 +36,19 @@ export default {
     };
   },
   props: {
-    owner: String,
-    post: String,
-    request: String,
+    userAddress: String,
+    postIpfsAddress: String,
+    requestIpfsAddress: String,
   },
   async mounted() {
-    const dataFromPost = await this.getRequestFromIpfs(this.$props.post);
-    const dataFromRequest = await this.getRequestFromIpfs(this.$props.request);
+    console.log(this.$props);
+
+    const dataFromPost = await this.getRequestFromIpfs(
+      this.$props.postIpfsAddress
+    );
+    const dataFromRequest = await this.getRequestFromIpfs(
+      this.$props.requestIpfsAddress
+    );
 
     this.title = dataFromPost["title"];
     this.price = dataFromPost["price"];
@@ -70,7 +76,8 @@ export default {
         provider
       );
 
-      const userAddress = this.$props.owner;
+      const userAddress = this.$props.userAddress;
+      console.log(this.$props);
       const user = await contract.fetchUser(userAddress);
 
       this.userName = user.name;

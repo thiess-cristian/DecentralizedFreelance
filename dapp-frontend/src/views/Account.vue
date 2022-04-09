@@ -37,9 +37,9 @@
         <div v-if="displayRequestFromUser" class="requests-to-fulfil">
           <div v-for="request in requestsFromUser" v-bind:key="request.id">
             <RequestFromUser
-              :owner="request.owner"
-              :post="request.post"
-              :request="request.request"
+              :clientAddress="request.ownerAddress"
+              :postIpfsAddress="request.postIpfsAddress"
+              :requestIpfsAddress="request.requestIpfsAddress"
             />
           </div>
         </div>
@@ -47,9 +47,9 @@
         <div v-if="displayRequestToUser" class="requests-fulfiled">
           <div v-for="request in requestsToUser" v-bind:key="request.id">
             <RequestToUser
-              :owner="request.owner"
-              :post="request.post"
-              :request="request.request"
+              :postOwnerAdddress="request.ownerAddress"
+              :postIpfsAddress="request.postIpfsAddress"
+              :requestIpfsAddress="request.requestIpfsAddress"
             />
           </div>
         </div>
@@ -154,11 +154,12 @@ export default {
       let returnedData = [];
       for (let entry in data) {
         returnedData.push({
-          owner: data[entry]["owner"],
-          post: data[entry]["post"],
-          request: data[entry]["request"],
+          ownerAddress: data[entry]["owner"],
+          postIpfsAddress: data[entry]["post"],
+          requestIpfsAddress: data[entry]["request"],
         });
       }
+
       return returnedData;
     },
     async getRequestsFromUser() {

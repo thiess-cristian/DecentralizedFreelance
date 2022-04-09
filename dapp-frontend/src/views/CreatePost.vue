@@ -61,12 +61,9 @@ export default {
       price: "",
       description: "",
       image: "",
-      client: "",
     };
   },
-  mounted() {
-    this.client = create("https://ipfs.infura.io:5001/api/v0");
-  },
+  mounted() {},
   methods: {
     async createPost() {
       const ipfsHash = await this.savePostToIpfs();
@@ -74,8 +71,9 @@ export default {
     },
     async savePostToIpfs() {
       try {
-        const image = await this.client.add(this.image);
-        const file = await this.client.add(
+        const client = create("https://ipfs.infura.io:5001/api/v0");
+        const image = await client.add(this.image);
+        const file = await client.add(
           JSON.stringify({
             title: this.title,
             description: this.description,

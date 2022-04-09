@@ -1,7 +1,11 @@
 <template>
   <div class="columns">
     <div class="column is-size-6">
-      <Request :owner="owner" :post="post" :request="request" />
+      <Request
+        :userAddress="clientAddress"
+        :postIpfsAddress="postIpfsAddress"
+        :requestIpfsAddress="requestIpfsAddress"
+      />
     </div>
     <div class="column is-size-6">
       <div class="file has-name">
@@ -41,9 +45,9 @@ export default {
     Request,
   },
   props: {
-    owner: String,
-    post: String,
-    request: String,
+    clientAddress: String,
+    postIpfsAddress: String,
+    requestIpfsAddress: String,
   },
   data() {
     return {
