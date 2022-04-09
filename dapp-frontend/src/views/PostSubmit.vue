@@ -27,8 +27,9 @@
 <script>
 import InfoSection from "../components/InfoSection.vue";
 
-import { requestManagerAddress } from "../../config";
+import { postsManagerAddress, requestManagerAddress } from "../../config";
 import RequestManager from "../../artifacts/contracts/RequestManager.sol/RequestManager.json";
+import PostManager from "../../artifacts/contracts/PostsManager.sol/PostsManager.json";
 import { create } from "ipfs-http-client";
 import { ethers } from "ethers";
 
@@ -81,6 +82,25 @@ export default {
       }
     },
 
+    async getPostOwner(ipfsHash) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        postsManagerAddress,
+        PostManager.abi,
+        signer
+      );
+
+      try {
+        const post = await contract.fetchPost(ipfsHash);
+        const postOwner = post["owner"];
+
+        return postOwner;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async saveRequestToBlockchain(ipfsHash) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -91,7 +111,10 @@ export default {
       );
 
       try {
-        await contract.createRequest(this.$route.params.id, ipfsHash);
+        const postHash = this.$route.params.id;
+        const postOwner = await this.getPostOwner(postHash);
+
+        await contract.createRequest(postHash, ipfsHash, postOwner);
       } catch (error) {
         console.log(error);
       }

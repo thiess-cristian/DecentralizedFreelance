@@ -149,12 +149,12 @@ export default {
         RequestManager.abi,
         provider
       );
-
-      const data = await contract.getAllRequests();
+      const userAddress = this.$store.state.user.address;
+      const data = await contract.getRequestsMadeForUser(userAddress);
       let returnedData = [];
       for (let entry in data) {
         returnedData.push({
-          ownerAddress: data[entry]["owner"],
+          ownerAddress: data[entry]["postOwnerAddress"],
           postIpfsAddress: data[entry]["post"],
           requestIpfsAddress: data[entry]["request"],
         });
@@ -163,7 +163,27 @@ export default {
       return returnedData;
     },
     async getRequestsFromUser() {
-      return this.getRequestsToUser();
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = new ethers.Contract(
+        requestManagerAddress,
+        RequestManager.abi,
+        provider
+      );
+      const userAddress = this.$store.state.user.address;
+      const data = await contract.getRequestsMadeByUser(userAddress);
+
+      console.log(data);
+
+      let returnedData = [];
+      for (let entry in data) {
+        returnedData.push({
+          ownerAddress: data[entry]["clientAddress"],
+          postIpfsAddress: data[entry]["post"],
+          requestIpfsAddress: data[entry]["request"],
+        });
+      }
+
+      return returnedData;
     },
   },
 };

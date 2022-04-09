@@ -89,6 +89,8 @@ export default {
 
       localStorage.setItem("address", accounts[0]);
 
+      console.log(accounts);
+
       this.$store.commit("setAddress", accounts[0]);
     },
 

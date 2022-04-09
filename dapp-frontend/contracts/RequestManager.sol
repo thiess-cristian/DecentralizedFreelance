@@ -8,7 +8,8 @@ contract RequestManager {
     Counters.Counter private _requestIds;
 
     struct Request {
-        address owner;
+        address clientAddress;
+        address postOwnerAddress;
         string post;
         string request;
     }
@@ -20,15 +21,20 @@ contract RequestManager {
 
     constructor() {}
 
-    function createRequest(string memory post, string memory hash) public {
+    function createRequest(
+        string memory post,
+        string memory hash,
+        address postOwnerAddress
+    ) public {
         uint256 requestId = _requestIds.current();
         _requestIds.increment();
 
         Request storage request = idToRequest[requestId];
 
-        request.owner = msg.sender;
+        request.clientAddress = msg.sender;
         request.post = post;
         request.request = hash;
+        request.postOwnerAddress = postOwnerAddress;
 
         hashToRequest[hash] = request;
 
@@ -50,6 +56,48 @@ contract RequestManager {
         for (uint256 i = 0; i < itemCount; i++) {
             Request storage currentItem = idToRequest[i];
             requests[i] = currentItem;
+        }
+
+        return requests;
+    }
+
+    function getRequestsMadeByUser(address clientAddress)
+        public
+        view
+        returns (Request[] memory)
+    {
+        uint256 itemCount = _requestIds.current();
+        uint256 index = 0;
+
+        Request[] memory requests = new Request[](itemCount);
+        for (uint256 i = 0; i < itemCount; i++) {
+            Request storage currentItem = idToRequest[i];
+
+            if (currentItem.postOwnerAddress == clientAddress) {
+                requests[index] = currentItem;
+                index++;
+            }
+        }
+
+        return requests;
+    }
+
+    function getRequestsMadeForUser(address postOwnerAddress)
+        public
+        view
+        returns (Request[] memory)
+    {
+        uint256 itemCount = _requestIds.current();
+        uint256 index = 0;
+
+        Request[] memory requests = new Request[](itemCount);
+        for (uint256 i = 0; i < itemCount; i++) {
+            Request storage currentItem = idToRequest[i];
+
+            if (currentItem.clientAddress == postOwnerAddress) {
+                requests[index] = currentItem;
+                index++;
+            }
         }
 
         return requests;
