@@ -4,7 +4,7 @@
       <div class="title">{{ title }}</div>
       <div class="columns">
         <div class="column">
-          <InfoSection :image="image" />
+          <InfoSection :image="image" :images="images" />
         </div>
         <div class="column">
           <div class="description">{{ description }}</div>
@@ -44,6 +44,7 @@ export default {
     return {
       title: "",
       image: "",
+      images: [],
       price: "",
       description: "",
       request: "",
@@ -53,10 +54,14 @@ export default {
     const post = await this.getIpfsPost(this.$route.params.id);
 
     this.title = post["title"];
-    const imageURL = `${ipfsURI}/${post["image"]}`;
+    const imageURL = `${ipfsURI}/${post["images"][0]}`;
     this.image = imageURL;
     this.price = post["price"];
     this.description = post["description"];
+
+    for (let i in post["images"]) {
+      this.images.push(`${ipfsURI}/${post["images"][i]}`);
+    }
   },
   methods: {
     async getIpfsPost(id) {

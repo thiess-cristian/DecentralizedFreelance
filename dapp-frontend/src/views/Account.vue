@@ -2,18 +2,24 @@
   <div class="container">
     <section class="section">
       <div class="columns">
-        <div class="column">
+        <div class="column is-8">
           <p class="title">Name: {{ name }}</p>
-          <input
-            class="input"
-            type="text"
-            placeholder="Name"
-            v-model="inputName"
-          />
-          <button class="button" @click="saveNewName">Save</button>
+          <div class="field has-addons">
+            <div class="control is-expanded">
+              <input
+                class="input"
+                type="text"
+                placeholder="Name"
+                v-model="inputName"
+              />
+            </div>
+
+            <div class="control">
+              <button class="button" @click="saveNewName">Save</button>
+            </div>
+          </div>
+
           <p class="title">Address: {{ $store.state.user.address }}</p>
-        </div>
-        <div class="column">
           <router-link class="button" to="/mining"> Mining </router-link>
         </div>
       </div>
@@ -24,11 +30,11 @@
         <ul>
           <li id="reqTofulfil" class="is-active" data-target="product-details">
             <a v-on:click="displayRequestFromUserFunction"
-              >Requests to fulfil</a
+              >Requests from users</a
             >
           </li>
           <li id="reqFulfiled" data-target="delivery-info">
-            <a v-on:click="displayRequestToUserFunction">Requests fulfiled</a>
+            <a v-on:click="displayRequestToUserFunction">Requests made</a>
           </li>
         </ul>
       </div>

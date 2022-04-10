@@ -59,7 +59,8 @@ export default {
       const id = post["id"];
 
       const ipfsData = await this.getIpfsPost(contentHash);
-      const imageUrl = `${ipfsURI}/${ipfsData["image"]}`;
+      const imageUrl = `${ipfsURI}/${ipfsData["images"][0]}`;
+
       this.posts.push({
         id: id.toString(),
         postAddress: contentHash,

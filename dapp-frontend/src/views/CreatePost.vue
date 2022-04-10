@@ -1,46 +1,62 @@
 <template>
   <div class="container">
-    <div class="box">
-      <div class="title">Create a post</div>
-      <div class="field">
-        <label class="label">Title</label>
-        <div class="control">
-          <input type="text" class="input" v-model="title" />
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter">
+        <div class="box">
+          <div class="title">Create a post</div>
+          <div class="field">
+            <label class="label">Title</label>
+            <div class="control">
+              <input type="text" class="input" v-model="title" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Description</label>
+            <div class="control">
+              <textarea type="text" class="textarea" v-model="description" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Price</label>
+            <div class="control">
+              <input type="number" class="input" v-model="price" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Images</label>
+            <ul class="block">
+              <li v-for="image in images" :key="image.message">
+                <div class="block">
+                  <span class="tag is-success">
+                    {{ image.name }}
+                    <button
+                      class="delete is-small"
+                      @click="removeImage(image)"
+                    ></button>
+                  </span>
+                </div>
+              </li>
+            </ul>
+            <div class="file">
+              <label class="file-label">
+                <input
+                  class="file-input"
+                  type="file"
+                  name="resume"
+                  @change="uploadImage"
+                />
+                <span class="file-cta">
+                  <span class="file-label"> Choose a file… </span>
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="mt-6 has-text-centered">
+            <button class="button is-primary" @click="createPost">
+              Submit
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label class="label">Description</label>
-        <div class="control">
-          <input type="text" class="input" v-model="description" />
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Price</label>
-        <div class="control">
-          <input type="number" class="input" v-model="price" />
-        </div>
-      </div>
-      <div class="field">
-        <div class="file has-name">
-          <label class="file-label">
-            <input
-              class="file-input"
-              type="file"
-              name="resume"
-              @change="uploadImage"
-            />
-            <span class="file-cta">
-              <span class="file-icon">
-                <i class="fas fa-upload"></i>
-              </span>
-              <span class="file-label"> Choose a file… </span>
-            </span>
-            <span class="file-name">File </span>
-          </label>
-        </div>
-      </div>
-      <div class="mt-6 has-text-centered">
-        <button class="button" @click="createPost">submit</button>
       </div>
     </div>
   </div>
@@ -61,6 +77,7 @@ export default {
       price: "",
       description: "",
       image: "",
+      images: [],
     };
   },
   mounted() {},
@@ -72,15 +89,25 @@ export default {
     async savePostToIpfs() {
       try {
         const client = create("https://ipfs.infura.io:5001/api/v0");
-        const image = await client.add(this.image);
+
+        let ipfsImages = [];
+        for (let i in this.images) {
+          const ipfsImage = await client.add(this.images[i]);
+          ipfsImages.push(ipfsImage.path);
+        }
+
+        //const image = await client.add(this.image);
         const file = await client.add(
           JSON.stringify({
             title: this.title,
             description: this.description,
             price: this.price,
-            image: image.path,
+            images: ipfsImages,
           })
         );
+
+        console.log(file);
+
         return file.path;
       } catch (error) {
         console.log(error);
@@ -104,7 +131,14 @@ export default {
 
     uploadImage(e) {
       const image = e.target.files[0];
+
+      this.images.push(image);
+      console.log(this.images);
       this.image = image;
+    },
+
+    removeImage(image) {
+      this.images.splice(this.images.indexOf(image), 1);
     },
   },
 };
