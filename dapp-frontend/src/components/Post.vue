@@ -13,9 +13,7 @@
       <div class="block">
         <div>Tags:</div>
         <div class="tags">
-          <div class="tag">tag</div>
-          <div class="tag">tag</div>
-          <div class="tag">tag</div>
+          <div class="tag" v-for="tag in tags" v-bind:key="tag">{{ tag }}</div>
         </div>
       </div>
     </div>
@@ -46,6 +44,7 @@ export default {
     price: String,
     userAddress: String,
     imageUrl: String,
+    tags: Array,
   },
   data() {
     return {
@@ -54,6 +53,8 @@ export default {
   },
   async mounted() {
     this.getSavedName();
+
+    console.log(this.tags);
   },
   methods: {
     async getSavedName() {

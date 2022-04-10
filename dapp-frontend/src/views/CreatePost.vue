@@ -17,6 +17,12 @@
             </div>
           </div>
           <div class="field">
+            <label class="label">Tags</label>
+            <div class="control">
+              <input type="text" class="input" v-model="tagsInput" />
+            </div>
+          </div>
+          <div class="field">
             <label class="label">Price</label>
             <div class="control">
               <input type="number" class="input" v-model="price" />
@@ -78,6 +84,8 @@ export default {
       description: "",
       image: "",
       images: [],
+      tagsInput: "",
+      tags: [],
     };
   },
   mounted() {},
@@ -96,11 +104,12 @@ export default {
           ipfsImages.push(ipfsImage.path);
         }
 
-        //const image = await client.add(this.image);
+        this.createTags();
         const file = await client.add(
           JSON.stringify({
             title: this.title,
             description: this.description,
+            tags: this.tags,
             price: this.price,
             images: ipfsImages,
           })
@@ -129,6 +138,9 @@ export default {
       }
     },
 
+    createTags() {
+      this.tags = this.tagsInput.replaceAll(" ", "").split(",");
+    },
     uploadImage(e) {
       const image = e.target.files[0];
 

@@ -26,6 +26,7 @@
             :price="post.price"
             :imageUrl="post.imageUrl"
             :userAddress="post.userAddress"
+            :tags="post.tags"
           />
         </div>
       </div>
@@ -69,6 +70,7 @@ export default {
         price: ipfsData["price"].toString(),
         imageUrl: imageUrl,
         userAddress: owner,
+        tags: ipfsData["tags"],
       });
     }
   },
