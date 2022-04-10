@@ -34,13 +34,10 @@ export default {
   methods: {
     async downloadFile() {
       const data = await this.getFileHash();
-      console.log(data[0]);
-
       await this.downloadFromIpfs(data[0]["file"]);
     },
 
     async downloadFromIpfs(hash) {
-      console.log("hash", hash);
       const ipfsURI = "https://ipfs.io/ipfs";
       const ipfsUrl = `${ipfsURI}/${hash}`;
       fetch(ipfsUrl)

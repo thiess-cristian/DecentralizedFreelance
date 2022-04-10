@@ -121,8 +121,7 @@ export default {
       );
 
       try {
-        const newUser = await contract.createUser(this.inputName);
-        console.log(newUser);
+        await contract.createUser(this.inputName);
       } catch (error) {
         console.log(error);
       }
@@ -151,13 +150,16 @@ export default {
       );
       const userAddress = this.$store.state.user.address;
       const data = await contract.getRequestsMadeForUser(userAddress);
+
       let returnedData = [];
       for (let entry in data) {
-        returnedData.push({
-          ownerAddress: data[entry]["postOwnerAddress"],
-          postIpfsAddress: data[entry]["post"],
-          requestIpfsAddress: data[entry]["request"],
-        });
+        if (data[entry]["request"]) {
+          returnedData.push({
+            ownerAddress: data[entry]["postOwnerAddress"],
+            postIpfsAddress: data[entry]["post"],
+            requestIpfsAddress: data[entry]["request"],
+          });
+        }
       }
 
       return returnedData;
@@ -172,15 +174,15 @@ export default {
       const userAddress = this.$store.state.user.address;
       const data = await contract.getRequestsMadeByUser(userAddress);
 
-      console.log(data);
-
       let returnedData = [];
       for (let entry in data) {
-        returnedData.push({
-          ownerAddress: data[entry]["clientAddress"],
-          postIpfsAddress: data[entry]["post"],
-          requestIpfsAddress: data[entry]["request"],
-        });
+        if (data[entry]["request"]) {
+          returnedData.push({
+            ownerAddress: data[entry]["clientAddress"],
+            postIpfsAddress: data[entry]["post"],
+            requestIpfsAddress: data[entry]["request"],
+          });
+        }
       }
 
       return returnedData;

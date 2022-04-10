@@ -88,9 +88,6 @@ export default {
       const accounts = await provider.listAccounts();
 
       localStorage.setItem("address", accounts[0]);
-
-      console.log(accounts);
-
       this.$store.commit("setAddress", accounts[0]);
     },
 

@@ -87,7 +87,6 @@ export default {
     },
     async submitFile() {
       const ipfsFile = await this.submitFileToIpfs();
-      console.log(ipfsFile);
       this.submitIpfsHashToBlockchain(ipfsFile);
     },
   },

@@ -41,8 +41,6 @@ export default {
     requestIpfsAddress: String,
   },
   async mounted() {
-    console.log(this.$props);
-
     const dataFromPost = await this.getRequestFromIpfs(
       this.$props.postIpfsAddress
     );
@@ -77,7 +75,6 @@ export default {
       );
 
       const userAddress = this.$props.userAddress;
-      console.log(this.$props);
       const user = await contract.fetchUser(userAddress);
 
       this.userName = user.name;
