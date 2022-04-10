@@ -7,18 +7,32 @@
           <InfoSection :image="image" :images="images" />
         </div>
         <div class="column">
-          <div class="description">{{ description }}</div>
-          <div class="price">{{ price }}</div>
-          <div class="title">submit request</div>
+          <div class="block">
+            <div class="title">Description:</div>
+            <div class="description">{{ description }}</div>
+          </div>
+          <div class="block">
+            <div class="title">Price:</div>
+            <div class="price">{{ price }}</div>
+          </div>
         </div>
       </div>
       <div>
-        <textarea
-          class="textarea"
-          v-model="request"
-          placeholder="e.g. Hello world"
-        ></textarea>
-        <button class="button is-primary" @click="submitRequest">submit</button>
+        <div class="block">
+          <div class="title">Your request</div>
+        </div>
+        <div class="block">
+          <textarea
+            class="textarea"
+            v-model="request"
+            placeholder="e.g. Hello world"
+          ></textarea>
+        </div>
+        <div class="block">
+          <button class="button is-primary" @click="submitRequest">
+            Submit
+          </button>
+        </div>
       </div>
     </div>
   </div>

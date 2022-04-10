@@ -1,14 +1,24 @@
 <template>
   <div class="container">
-    <div class="columns">
-      <div class="column">
-        <button class="button" @click="prevImage">left arrow</button>
-      </div>
-      <div class="column">
+    <div class="has-text-centered">
+      <figure class="image is-inline-block">
         <img :src="images[currentImageIndex]" />
+      </figure>
+    </div>
+    <div class="columns is-centered">
+      <div class="column has-text-right">
+        <button class="button" @click="prevImage">
+          <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+          </span>
+        </button>
       </div>
-      <div class="column">
-        <button class="button" @click="nextImage">right arrow</button>
+      <div class="column has-text-left">
+        <button class="button" @click="nextImage">
+          <span class="icon">
+            <i class="fas fa-arrow-right"></i>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -42,4 +52,8 @@ export default {
 </script>
 
 <style scoped>
+img {
+  width: 256px; /* you can use % */
+  height: 256px;
+}
 </style>
