@@ -27,6 +27,18 @@ async function deployFileManager() {
   return fileManager.address;
 }
 
+async function deployPaymentService() {
+  const paymentServiceFactory = await hre.ethers.getContractFactory(
+    "PaymentService"
+  );
+  const paymentService = await paymentServiceFactory.deploy();
+
+  await paymentService.deployed();
+  console.log("PaymentService deployed to:", paymentService.address);
+
+  return paymentService.address;
+}
+
 async function main() {
   /* these two lines deploy the contract to the network */
   const PostsManager = await hre.ethers.getContractFactory("PostsManager");
@@ -48,6 +60,8 @@ async function main() {
   const requestManagerAddress = await deployRequestManager();
   const fileManagerAddress = await deployFileManager();
 
+  const paymentServiceAddress = await deployPaymentService();
+
   fs.writeFileSync(
     "./config.js",
     `
@@ -56,6 +70,7 @@ async function main() {
   export const userProfileManagerAddress ="${userProfileManager.address}"
   export const requestManagerAddress="${requestManagerAddress}"
   export const fileManagerAddress="${fileManagerAddress}"
+  export const paymentServiceAddress="${paymentServiceAddress}"
   `
   );
 }
