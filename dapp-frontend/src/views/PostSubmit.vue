@@ -47,7 +47,7 @@ import PostManager from "../../artifacts/contracts/PostsManager.sol/PostsManager
 import { create } from "ipfs-http-client";
 import { ethers } from "ethers";
 
-const ipfsURI = "https://ipfs.io/ipfs";
+const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
 export default {
   name: "PostSubmit",
@@ -86,7 +86,7 @@ export default {
     },
 
     async saveRequestToIpfs() {
-      const client = create("https://ipfs.infura.io:5001/api/v0");
+      const client = create("http://127.0.0.1:5001");
 
       try {
         const requestIpfs = await client.add(

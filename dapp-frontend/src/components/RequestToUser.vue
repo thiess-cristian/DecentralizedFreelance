@@ -38,7 +38,7 @@ export default {
     },
 
     async downloadFromIpfs(hash) {
-      const ipfsURI = "https://ipfs.io/ipfs";
+      const ipfsURI = "http://127.0.0.1:8081/ipfs";
       const ipfsUrl = `${ipfsURI}/${hash}`;
       fetch(ipfsUrl)
         .then((response) => response.blob())

@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     async submitFileToIpfs() {
-      const client = create("https://ipfs.infura.io:5001/api/v0");
+      const client = create("http://127.0.0.1:5001");
       try {
         const file = await client.add(this.file);
         return file.path;

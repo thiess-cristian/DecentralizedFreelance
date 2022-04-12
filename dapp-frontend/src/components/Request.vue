@@ -22,7 +22,7 @@ import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol
 import { ethers } from "ethers";
 import { userProfileManagerAddress } from "../../config";
 
-const ipfsURI = "https://ipfs.io/ipfs";
+const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
 export default {
   name: "Request",

@@ -41,7 +41,7 @@ import { postsManagerAddress } from "../../config";
 import PostsManager from "../../artifacts/contracts/PostsManager.sol/PostsManager.json";
 import { ethers } from "ethers";
 
-const ipfsURI = "https://ipfs.io/ipfs";
+const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
 export default {
   name: "Posts",

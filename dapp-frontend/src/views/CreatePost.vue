@@ -96,7 +96,7 @@ export default {
     },
     async savePostToIpfs() {
       try {
-        const client = create("https://ipfs.infura.io:5001/api/v0");
+        const client = create("http://127.0.0.1:5001");
 
         let ipfsImages = [];
         for (let i in this.images) {
