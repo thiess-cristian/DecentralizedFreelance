@@ -40,9 +40,15 @@
     <button class="delete" @click="removeNotification"></button>
     <div class="has-text-centered">Please install Metamask</div>
   </div>
+
+  <div v-if="userNotLoggedIn()" class="notification is-warning">
+    <div class="has-text-centered">Account name is not set</div>
+  </div>
 </template>
 
 <script>
+import { getUsername } from "../utils/utils";
+
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
@@ -99,6 +105,10 @@ export default {
     removeNotification() {
       const notification = document.getElementById("notification");
       notification.classList.add("is-hidden");
+    },
+
+    userNotLoggedIn() {
+      return getUsername() == "";
     },
   },
 };

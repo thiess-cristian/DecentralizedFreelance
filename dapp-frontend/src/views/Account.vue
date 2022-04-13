@@ -73,6 +73,8 @@ import RequestManager from "../../artifacts/contracts/RequestManager.sol/Request
 import { ethers } from "ethers";
 import { userProfileManagerAddress, requestManagerAddress } from "../../config";
 
+import { getUsername } from "../utils/utils";
+
 export default {
   name: "Account",
   components: {
@@ -134,17 +136,8 @@ export default {
     },
 
     async getSavedName() {
-      const provider = new ethers.providers.JsonRpcProvider();
-      const contract = new ethers.Contract(
-        userProfileManagerAddress,
-        UserProfileManager.abi,
-        provider
-      );
-
       const userAddress = this.$store.state.user.address;
-      const user = await contract.fetchUser(userAddress);
-
-      this.name = user.name;
+      this.name = await getUsername(userAddress);
     },
 
     async getRequestsToUser() {
