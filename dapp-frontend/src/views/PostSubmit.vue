@@ -47,6 +47,9 @@ import PostManager from "../../artifacts/contracts/PostsManager.sol/PostsManager
 import { create } from "ipfs-http-client";
 import { ethers } from "ethers";
 
+import { toast } from "bulma-toast";
+import { getUsername } from "../utils/utils";
+
 const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
 export default {
@@ -140,8 +143,21 @@ export default {
     },
 
     async submitRequest() {
-      const ipfsHash = await this.saveRequestToIpfs();
-      await this.saveRequestToBlockchain(ipfsHash);
+      const hasUsername =
+        (await getUsername(this.$store.state.user.address)) != "";
+      if (hasUsername) {
+        const ipfsHash = await this.saveRequestToIpfs();
+        await this.saveRequestToBlockchain(ipfsHash);
+      } else {
+        toast({
+          message: "Cant post",
+          type: "is-warning",
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 2000,
+          position: "bottom-right",
+        });
+      }
     },
   },
 };

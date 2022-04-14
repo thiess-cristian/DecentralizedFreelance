@@ -9,6 +9,7 @@
           class="navbar-item button"
           to="/create_post"
           v-if="$store.state.isAuthenticated"
+          @click="checkForUsername"
         >
           Create Post
         </router-link>
@@ -41,7 +42,7 @@
     <div class="has-text-centered">Please install Metamask</div>
   </div>
 
-  <div v-if="userNotLoggedIn()" class="notification is-warning">
+  <div v-if="hasUserAccount == false" class="notification is-warning">
     <div class="has-text-centered">Account name is not set</div>
   </div>
 </template>
@@ -55,7 +56,12 @@ import { ethers } from "ethers";
 
 export default {
   name: "Header",
-  mounted() {
+  data() {
+    return {
+      hasUserAccount: false,
+    };
+  },
+  async mounted() {
     if (typeof window.ethereum !== "undefined") {
       const notification = document.getElementById("notification");
       notification.classList.add("is-hidden");
@@ -65,6 +71,12 @@ export default {
 
     if (address != "") {
       this.$store.commit("setAddress", address);
+    }
+    const username = await getUsername(address);
+    this.hasUserAccount = username != "";
+
+    if (this.hasUserAccount) {
+      this.$store.commit("setUsername", username);
     }
   },
   methods: {
@@ -95,6 +107,7 @@ export default {
 
       localStorage.setItem("address", accounts[0]);
       this.$store.commit("setAddress", accounts[0]);
+      this.$store.commit("setUsername", getUsername(accounts[0]));
     },
 
     disconnect() {
@@ -106,9 +119,11 @@ export default {
       const notification = document.getElementById("notification");
       notification.classList.add("is-hidden");
     },
-
-    userNotLoggedIn() {
-      return getUsername() == "";
+    checkForUsername() {
+      console.log(this.$store.state);
+      if (this.$store.state.user.name != "") {
+        console.log("lol");
+      }
     },
   },
 };

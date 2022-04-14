@@ -4,6 +4,7 @@ import PostSubmit from "../views/PostSubmit.vue";
 import CreatePost from "../views/CreatePost.vue";
 import Account from "../views/Account.vue";
 import Mining from "../views/Mining.vue";
+import store from "../store";
 
 const routes = [
   {
@@ -21,6 +22,13 @@ const routes = [
     path: "/create_post",
     name: "CreatePost",
     component: CreatePost,
+    beforeEnter: (to, from, next) => {
+      if (store.state.user.name == "") {
+        next(false);
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/account",

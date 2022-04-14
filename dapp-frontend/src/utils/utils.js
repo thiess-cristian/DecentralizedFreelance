@@ -10,12 +10,13 @@ export async function getUsername(address) {
     provider
   );
 
-  let user;
+  let username;
   try {
-    user = await contract.fetchUser(address);
+    const user = await contract.fetchUser(address);
+    username = user.name;
   } catch (error) {
-    user = null;
+    username = "";
   }
 
-  return user.name;
+  return username;
 }

@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     user: {
-      username: "",
+      name: "",
       address: "",
     },
     isAuthenticated: false,
@@ -34,6 +34,12 @@ export default createStore({
     removeAddress(state) {
       state.user.address = "";
       state.isAuthenticated = false;
+    },
+    setUsername(state, username) {
+      state.user.name = username;
+    },
+    removeUsername(state) {
+      state.user.name = "";
     },
   },
   actions: {},

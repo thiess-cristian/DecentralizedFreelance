@@ -30,9 +30,7 @@
 </template>
 
 <script>
-import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
-import { ethers } from "ethers";
-import { userProfileManagerAddress } from "../../config";
+import { getUsername } from "../utils/utils";
 
 export default {
   name: "Post",
@@ -52,24 +50,7 @@ export default {
     };
   },
   async mounted() {
-    this.getSavedName();
-
-    console.log(this.tags);
-  },
-  methods: {
-    async getSavedName() {
-      const provider = new ethers.providers.JsonRpcProvider();
-      const contract = new ethers.Contract(
-        userProfileManagerAddress,
-        UserProfileManager.abi,
-        provider
-      );
-
-      const userAddress = this.$props.userAddress;
-      const user = await contract.fetchUser(userAddress);
-
-      this.userName = user.name;
-    },
+    this.userName = await getUsername(this.$props.userAddress);
   },
 };
 </script>

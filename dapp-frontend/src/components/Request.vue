@@ -18,9 +18,7 @@
 </template>
 
 <script>
-import UserProfileManager from "../../artifacts/contracts/UserProfileManager.sol/UserProfileManager.json";
-import { ethers } from "ethers";
-import { userProfileManagerAddress } from "../../config";
+import { getUsername } from "../utils/utils";
 
 const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
@@ -52,7 +50,7 @@ export default {
     this.price = dataFromPost["price"];
     this.requestDescription = dataFromRequest["request"];
 
-    this.getSavedName();
+    this.userName = await getUsername(this.$props.userAddress);
   },
   methods: {
     displayDescriptionFunction() {
@@ -65,19 +63,6 @@ export default {
       const data = await response.json();
 
       return data;
-    },
-    async getSavedName() {
-      const provider = new ethers.providers.JsonRpcProvider();
-      const contract = new ethers.Contract(
-        userProfileManagerAddress,
-        UserProfileManager.abi,
-        provider
-      );
-
-      const userAddress = this.$props.userAddress;
-      const user = await contract.fetchUser(userAddress);
-
-      this.userName = user.name;
     },
   },
 };
