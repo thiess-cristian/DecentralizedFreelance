@@ -22,6 +22,8 @@ import FileManager from "../../artifacts/contracts/FileManager.sol/FileManager.j
 import PaymentService from "../../artifacts/contracts/PaymentService.sol/PaymentService.json";
 import { ethers } from "ethers";
 
+const ascii85 = require("ascii85");
+
 export default {
   name: "RequestToUser.vue",
   components: {
@@ -33,9 +35,37 @@ export default {
     requestIpfsAddress: String,
   },
   methods: {
+    async decryptFile(address, data) {
+      const structuredData = {
+        version: "x25519-xsalsa20-poly1305",
+        ephemPublicKey: data.slice(0, 32).toString("base64"),
+        nonce: data.slice(32, 56).toString("base64"),
+        ciphertext: data.slice(56).toString("base64"),
+      };
+
+      const ct = `0x${Buffer.from(
+        JSON.stringify(structuredData),
+        "utf8"
+      ).toString("hex")}`;
+
+      const decrypt = await window.ethereum.request({
+        method: "eth_decrypt",
+        params: [ct, address],
+      });
+
+      return ascii85.decode(decrypt);
+    },
+
     async downloadFile() {
       await this.doPayment(this.postOwnerAdddress);
-      //const data = await this.getFileHash();
+      const dataHash = await this.getFileHash();
+
+      const data = await this.getDataFromIpfs(dataHash);
+      const decrypted = await this.decryptFile(
+        this.$store.state.user.address,
+        data
+      );
+      console.log(decrypted);
       //await this.downloadFromIpfs(data[0]["file"]);
     },
 
@@ -44,6 +74,14 @@ export default {
       const ipfsUrl = `${ipfsURI}/${hash}`;
 
       return ipfsUrl;
+    },
+
+    async getDataFromIpfs(hash) {
+      const ipfsUrl = this.getIpfsURL(hash);
+      const response = await fetch(ipfsUrl);
+      const data = await response.json();
+
+      return data;
     },
 
     async downloadFromIpfs(hash) {

@@ -7,6 +7,7 @@ contract UserProfileManager {
     struct User {
         uint256 id;
         string name;
+        string publicKey;
         address owner;
     }
 
@@ -17,13 +18,14 @@ contract UserProfileManager {
 
     constructor() {}
 
-    function createUser(string memory name) public {
+    function createUser(string memory name, string memory publicKey) public {
         uint256 userId = _userIds.current();
         _userIds.increment();
 
         User storage user = idToUser[userId];
         user.id = userId;
         user.name = name;
+        user.publicKey = publicKey;
         user.owner = msg.sender;
     }
 

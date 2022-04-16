@@ -20,3 +20,21 @@ export async function getUsername(address) {
 
   return username;
 }
+
+export async function getPublicKey(address) {
+  const provider = new ethers.providers.JsonRpcProvider();
+  const contract = new ethers.Contract(
+    userProfileManagerAddress,
+    UserProfileManager.abi,
+    provider
+  );
+
+  let publicKey = "";
+  try {
+    const user = await contract.fetchUser(address);
+    publicKey = user.publicKey;
+  } catch (error) {
+    console.log(error);
+  }
+  return publicKey;
+}

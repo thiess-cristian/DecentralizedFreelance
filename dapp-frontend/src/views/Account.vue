@@ -119,6 +119,19 @@ export default {
       this.displayRequestFromUser = false;
     },
 
+    async getPublicKey(address) {
+      const account = address;
+
+      // Key is returned as base64
+      const keyB64 = await window.ethereum.request({
+        method: "eth_getEncryptionPublicKey",
+        params: [account],
+      });
+
+      //const publicKey = Buffer.from(keyB64, "base64");
+      return keyB64;
+    },
+
     async saveNewName() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
@@ -127,9 +140,9 @@ export default {
         UserProfileManager.abi,
         signer
       );
-
+      const publicKey = await this.getPublicKey(this.$store.state.user.address);
       try {
-        await contract.createUser(this.inputName);
+        await contract.createUser(this.inputName, publicKey);
       } catch (error) {
         console.log(error);
       }
