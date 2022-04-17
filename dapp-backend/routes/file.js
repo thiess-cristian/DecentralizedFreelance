@@ -38,6 +38,10 @@ function encryptData(publicKey, data) {
 }
 
 router.post("/get_file_as_byte_string", upload.single("file"), (req, res) => {
+  res.send(req.file);
+});
+
+router.post("/encrypt", upload.single("file"), (req, res) => {
   const publicKey = req.body.publicKey;
   const publicKeyBuffer = Buffer.from(publicKey, "base64");
   const encrypted = encryptData(publicKeyBuffer, req.file.buffer);

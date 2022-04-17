@@ -41,7 +41,7 @@ import { ethers } from "ethers";
 
 import { getPublicKey } from "../utils/utils";
 
-import { encrypt } from "@metamask/eth-sig-util";
+const metamaskUtil = require("@metamask/eth-sig-util");
 const ascii85 = require("ascii85");
 //var fs = require("fs");
 
@@ -94,20 +94,33 @@ export default {
       this.file = e.target.files[0];
     },
 
-    async encryptFile(publicKey, data) {
-      const enc = encrypt({
+    async encryptData(publicKey, data) {
+      // Returned object contains 4 properties: version, ephemPublicKey, nonce, ciphertext
+      // Each contains data encoded using base64, version is always the same string
+      const enc = metamaskUtil.encrypt({
         publicKey: publicKey.toString("base64"),
         data: ascii85.encode(data).toString(),
         version: "x25519-xsalsa20-poly1305",
       });
 
-      // const buf = Buffer.concat([
-      //   Buffer.from(enc.ephemPublicKey, "base64"),
-      //   Buffer.from(enc.nonce, "base64"),
-      //   Buffer.from(enc.ciphertext, "base64"),
-      // ]);
+      // We want to store the data in smart contract, therefore we concatenate them
+      // into single Buffer
+      const buf = Buffer.concat([
+        Buffer.from(enc.ephemPublicKey, "base64"),
+        Buffer.from(enc.nonce, "base64"),
+        Buffer.from(enc.ciphertext, "base64"),
+      ]);
 
-      return enc;
+      // In smart contract we are using `bytes[112]` variable (fixed size byte array)
+      // you might need to use `bytes` type for dynamic sized array
+      // We are also using ethers.js which requires type `number[]` when passing data
+      // for argument of type `bytes` to the smart contract function
+      // Next line just converts the buffer to `number[]` required by contract function
+      // THIS LINE IS USED IN OUR ORIGINAL CODE:
+      // return buf.toJSON().data;
+
+      // Return just the Buffer to make the function directly compatible with decryptData function
+      return buf;
     },
     async decryptFile(address, data) {
       const structuredData = {
@@ -147,33 +160,37 @@ export default {
       const formData = new FormData();
       formData.append("file", this.file);
       formData.append("publicKey", publicKey);
-      let cryptedFile = null;
-      cryptedFile = await axios
+
+      const file = await axios
         .post("/file/get_file_as_byte_string", formData)
         .then((response) => {
-          console.log(response);
-          return response.data;
+          return response;
           //const bytes = new Uint8Array(response.data);
-
-          // const blob = new Blob([bytes]);
-          // const link = document.createElement("a");
-          // link.href = window.URL.createObjectURL(blob);
-          // link.download = "test.png";
-
-          // document.body.appendChild(link);
-
-          // link.click();
-
-          // document.body.removeChild(link);
 
           // console.log(bytes);
         });
 
-      console.log(cryptedFile);
+      console.log("original file", file);
+      const publicKeyBuffer = Buffer.from(publicKey, "base64");
+      const cryptedFile = await this.encryptData(
+        publicKeyBuffer,
+        file.data.buffer.data
+      );
 
       const decrypted = await this.decryptFile(this.clientAddress, cryptedFile);
 
-      console.log(decrypted);
+      const bytes = new Uint8Array(decrypted);
+      //console.log("decrypted file", decrypted);
+      const blob = new Blob([bytes]);
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "test.png";
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
     },
   },
 };
