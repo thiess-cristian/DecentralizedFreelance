@@ -43,7 +43,9 @@ import { getPublicKey } from "../utils/utils";
 
 import { encrypt } from "@metamask/eth-sig-util";
 const ascii85 = require("ascii85");
-var fs = require("fs");
+//var fs = require("fs");
+
+import axios from "axios";
 
 export default {
   name: "RequestFromUser",
@@ -129,24 +131,49 @@ export default {
     },
     async submitFile() {
       const publicKey = await getPublicKey(this.clientAddress);
-
-      const publicKeyBuffer = Buffer.from(publicKey, "base64");
-
-      const buffer = fs.readFileSync(this.file, "utf8");
-
+      //const publicKeyBuffer = Buffer.from(publicKey, "base64");
+      // const buffer = fs.readFileSync(this.file, "utf8");
       // const buffer = await fetch(this.file)
       //   .then((response) => response.getAsBinary())
       //   .then((buf) => {
       //     return buf;
       //   });
       //const buffer = this.file.getAsBinary();
-      console.log(buffer);
-      const crypted = await this.encryptFile(publicKeyBuffer, buffer);
-
-      const decrypted = await this.decryptFile(this.clientAddress, crypted);
-      console.log(decrypted.toString());
+      // console.log(buffer);
+      // const crypted = await this.encryptFile(publicKeyBuffer, buffer);
+      // console.log(decrypted.toString());
       //const ipfsFile = await this.submitFileToIpfs();
       //this.submitIpfsHashToBlockchain(ipfsFile);
+      const formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("publicKey", publicKey);
+      let cryptedFile = null;
+      cryptedFile = await axios
+        .post("/file/get_file_as_byte_string", formData)
+        .then((response) => {
+          console.log(response);
+          return response.data;
+          //const bytes = new Uint8Array(response.data);
+
+          // const blob = new Blob([bytes]);
+          // const link = document.createElement("a");
+          // link.href = window.URL.createObjectURL(blob);
+          // link.download = "test.png";
+
+          // document.body.appendChild(link);
+
+          // link.click();
+
+          // document.body.removeChild(link);
+
+          // console.log(bytes);
+        });
+
+      console.log(cryptedFile);
+
+      const decrypted = await this.decryptFile(this.clientAddress, cryptedFile);
+
+      console.log(decrypted);
     },
   },
 };

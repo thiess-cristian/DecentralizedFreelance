@@ -4,7 +4,7 @@ import router from "./router";
 import axios from "axios";
 import store from "./store";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "http://localhost:3000";
 
 require("./assets/main.scss");
 
