@@ -7,7 +7,6 @@ const router = express.Router();
 
 const metamaskUtil = require("@metamask/eth-sig-util");
 const ascii85 = require("ascii85");
-
 function encryptData(publicKey, data) {
   // Returned object contains 4 properties: version, ephemPublicKey, nonce, ciphertext
   // Each contains data encoded using base64, version is always the same string
@@ -43,11 +42,34 @@ router.post("/get_file_as_byte_string", upload.single("file"), (req, res) => {
 
 router.post("/encrypt", upload.single("file"), (req, res) => {
   const publicKey = req.body.publicKey;
+  console.log(publicKey);
   const publicKeyBuffer = Buffer.from(publicKey, "base64");
+  console.log(req.file);
   const encrypted = encryptData(publicKeyBuffer, req.file.buffer);
   console.log(encrypted);
+  const bytes = new Uint8Array(encrypted);
+  res.send({ encrypted: bytes, original: req.file });
+});
+
+function normalEncrypt(publicKey, text) {
+  const enc = metamaskUtil.encrypt({
+    publicKey: publicKey.toString("base64"),
+    data: ascii85.encode(text).toString(),
+    version: "x25519-xsalsa20-poly1305",
+  });
+
+  return enc;
+}
+
+router.post("/encrypt2", upload.single("file"), (req, res) => {
+  const file = req.file;
+  console.log(file);
+  const publicKey = req.body.publicKey;
   console.log(publicKey);
-  res.send(encrypted);
+  const publicKeyBuffer = Buffer.from(publicKey, "base64");
+  encrypted = normalEncrypt(publicKeyBuffer, file.buffer);
+
+  res.send({ encrypted: encrypted });
 });
 
 module.exports = router;

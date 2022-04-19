@@ -142,8 +142,62 @@ export default {
 
       return ascii85.decode(decrypt);
     },
+
+    async normalDecrypt(address, encrypted) {
+      const structuredData = {
+        version: encrypted.version,
+        ephemPublicKey: encrypted.ephemPublicKey,
+        nonce: encrypted.nonce,
+        ciphertext: encrypted.ciphertext,
+      };
+
+      const ct = `0x${Buffer.from(
+        JSON.stringify(structuredData),
+        "utf8"
+      ).toString("hex")}`;
+
+      const decrypt = await window.ethereum.request({
+        method: "eth_decrypt",
+        params: [ct, address],
+      });
+
+      return ascii85.decode(decrypt);
+    },
+
     async submitFile() {
       const publicKey = await getPublicKey(this.clientAddress);
+      console.log("key", publicKey);
+      const formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("publicKey", publicKey);
+      const response = await axios
+        .post("/file/encrypt2", formData)
+        .then((response) => {
+          return response;
+        });
+
+      const decrypted = await this.normalDecrypt(
+        this.clientAddress,
+        response.data.encrypted
+      );
+      console.log(decrypted);
+
+      const bytes = new Uint8Array(decrypted);
+      //console.log("decrypted file", decrypted);
+      const blob = new Blob([bytes]);
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "test.png";
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+    },
+    async initialTry() {
+      const publicKey = await getPublicKey(this.clientAddress);
+      console.log("key", publicKey);
       //const publicKeyBuffer = Buffer.from(publicKey, "base64");
       // const buffer = fs.readFileSync(this.file, "utf8");
       // const buffer = await fetch(this.file)
@@ -162,7 +216,7 @@ export default {
       formData.append("publicKey", publicKey);
 
       const file = await axios
-        .post("/file/get_file_as_byte_string", formData)
+        .post("/file/encrypt", formData)
         .then((response) => {
           return response;
           //const bytes = new Uint8Array(response.data);
@@ -174,10 +228,21 @@ export default {
       const publicKeyBuffer = Buffer.from(publicKey, "base64");
       const cryptedFile = await this.encryptData(
         publicKeyBuffer,
-        file.data.buffer.data
+        file.data.original.buffer.data
       );
-
-      const decrypted = await this.decryptFile(this.clientAddress, cryptedFile);
+      console.log("crypted", cryptedFile);
+      console.log("server crypted", file.data.encrypted);
+      const lenght = Object.keys(file.data.encrypted).length;
+      let encryptedArray = new Uint8Array(lenght);
+      console.log("length", lenght);
+      for (let i = 0; i < lenght; i++) {
+        encryptedArray[i] = file.data.encrypted[i];
+      }
+      console.log(encryptedArray);
+      const decrypted = await this.decryptFile(
+        this.clientAddress,
+        encryptedArray
+      );
 
       const bytes = new Uint8Array(decrypted);
       //console.log("decrypted file", decrypted);
