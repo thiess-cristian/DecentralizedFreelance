@@ -41,6 +41,25 @@ contract FileManager {
         emit fileCreated(fileId, hash);
     }
 
+    function getFile(string memory requestIpfsHash)
+        public
+        view
+        returns (File memory)
+    {
+        uint256 fileCount = _fileIds.current();
+
+        for (uint256 i = 0; i < fileCount; i++) {
+            File storage currentFile = idToFile[i];
+            if (
+                keccak256(bytes(currentFile.request)) ==
+                keccak256(bytes(requestIpfsHash))
+            ) {
+                return currentFile;
+            }
+        }
+        revert("file not found");
+    }
+
     function getAllFiles() public view returns (File[] memory) {
         uint256 itemCount = _fileIds.current();
 

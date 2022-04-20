@@ -35,12 +35,12 @@ export default {
     requestIpfsAddress: String,
   },
   methods: {
-    async decryptFile(address, data) {
+    async decryptFile(address, encrypted) {
       const structuredData = {
-        version: "x25519-xsalsa20-poly1305",
-        ephemPublicKey: data.slice(0, 32).toString("base64"),
-        nonce: data.slice(32, 56).toString("base64"),
-        ciphertext: data.slice(56).toString("base64"),
+        version: encrypted.version,
+        ephemPublicKey: encrypted.ephemPublicKey,
+        nonce: encrypted.nonce,
+        ciphertext: encrypted.ciphertext,
       };
 
       const ct = `0x${Buffer.from(
@@ -57,7 +57,7 @@ export default {
     },
 
     async downloadFile() {
-      await this.doPayment(this.postOwnerAdddress);
+      //await this.doPayment(this.postOwnerAdddress);
       const dataHash = await this.getFileHash();
 
       const data = await this.getDataFromIpfs(dataHash);
@@ -66,7 +66,17 @@ export default {
         data
       );
       console.log(decrypted);
-      //await this.downloadFromIpfs(data[0]["file"]);
+      const bytes = new Uint8Array(decrypted);
+      const blob = new Blob([bytes]);
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "test.png";
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
     },
 
     getIpfsURL(hash) {
@@ -80,7 +90,7 @@ export default {
       const ipfsUrl = this.getIpfsURL(hash);
       const response = await fetch(ipfsUrl);
       const data = await response.json();
-
+      console.log(data);
       return data;
     },
 
@@ -105,8 +115,9 @@ export default {
         provider
       );
 
-      const data = await contract.getAllFiles();
-      return data;
+      const data = await contract.getFile(this.requestIpfsAddress);
+      console.log(data);
+      return data.file;
     },
 
     async getPaymentAmmount(requestIpfsHash) {
