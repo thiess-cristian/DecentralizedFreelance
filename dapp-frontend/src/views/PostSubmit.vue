@@ -50,6 +50,10 @@ import { ethers } from "ethers";
 import { toast } from "bulma-toast";
 import { getUsername } from "../utils/utils";
 
+import axios from "axios";
+
+import { getPublicKey } from "../utils/utils";
+
 const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
 export default {
@@ -88,13 +92,36 @@ export default {
       return data;
     },
 
+    async encryptRequest() {
+      const postHash = this.$route.params.id;
+
+      const postData = await this.getIpfsPost(postHash);
+
+      console.log(postData);
+
+      const postOwnerPublicKey = await getPublicKey(postData.ownerAddress);
+
+      const encrypted = await axios
+        .post("/request/encrypt", {
+          publicKey: postOwnerPublicKey,
+          request: this.request,
+        })
+        .then((response) => {
+          return response.data.encrypted;
+        });
+
+      console.log(encrypted);
+      return encrypted;
+    },
+
     async saveRequestToIpfs() {
       const client = create("http://127.0.0.1:5001");
 
       try {
+        const encryptedRequest = await this.encryptRequest();
         const requestIpfs = await client.add(
           JSON.stringify({
-            request: this.request,
+            request: encryptedRequest,
             postHash: this.$route.params.id,
           })
         );

@@ -57,7 +57,7 @@ export default {
     },
 
     async downloadFile() {
-      //await this.doPayment(this.postOwnerAdddress);
+      await this.doPayment(this.postOwnerAdddress);
       const dataHash = await this.getFileHash();
 
       const data = await this.getDataFromIpfs(dataHash);

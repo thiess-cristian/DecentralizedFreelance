@@ -112,6 +112,7 @@ export default {
             tags: this.tags,
             price: this.price,
             images: ipfsImages,
+            ownerAddress: this.$store.state.user.address,
           })
         );
 

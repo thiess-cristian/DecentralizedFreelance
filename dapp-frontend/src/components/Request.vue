@@ -19,7 +19,7 @@
 
 <script>
 import { getUsername } from "../utils/utils";
-
+//const ascii85 = require("ascii85");
 const ipfsURI = "http://127.0.0.1:8081/ipfs";
 
 export default {
@@ -30,6 +30,8 @@ export default {
       title: "",
       price: "",
       requestDescription: "",
+      requestEncrypted: "",
+      wasDecrypted: false,
       userName: "",
     };
   },
@@ -48,13 +50,42 @@ export default {
 
     this.title = dataFromPost["title"];
     this.price = dataFromPost["price"];
-    this.requestDescription = dataFromRequest["request"];
+    this.requestEncrypted = dataFromRequest["request"];
 
     this.userName = await getUsername(this.$props.userAddress);
   },
   methods: {
-    displayDescriptionFunction() {
+    async decryptRequest(address, encrypted) {
+      const structuredData = {
+        version: encrypted.version,
+        ephemPublicKey: encrypted.ephemPublicKey,
+        nonce: encrypted.nonce,
+        ciphertext: encrypted.ciphertext,
+      };
+
+      const ct = `0x${Buffer.from(
+        JSON.stringify(structuredData),
+        "utf8"
+      ).toString("hex")}`;
+
+      const decrypt = await window.ethereum.request({
+        method: "eth_decrypt",
+        params: [ct, address],
+      });
+
+      this.wasDecrypted = true;
+      return decrypt;
+    },
+
+    async displayDescriptionFunction() {
       this.displayDescription = !this.displayDescription;
+
+      if (!this.wasDecrypted) {
+        this.requestDescription = await this.decryptRequest(
+          this.userAddress,
+          this.requestEncrypted
+        );
+      }
     },
 
     async getRequestFromIpfs(id) {
