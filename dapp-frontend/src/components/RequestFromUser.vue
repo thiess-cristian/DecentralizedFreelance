@@ -5,6 +5,7 @@
         :userAddress="clientAddress"
         :postIpfsAddress="postIpfsAddress"
         :requestIpfsAddress="requestIpfsAddress"
+        requestType="FromUser"
       />
     </div>
     <div class="column is-size-6">

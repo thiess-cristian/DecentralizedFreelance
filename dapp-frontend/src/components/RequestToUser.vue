@@ -5,6 +5,7 @@
         :userAddress="postOwnerAdddress"
         :postIpfsAddress="postIpfsAddress"
         :requestIpfsAddress="requestIpfsAddress"
+        requestType="ToUser"
       />
     </div>
     <div class="column">

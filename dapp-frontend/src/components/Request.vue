@@ -33,6 +33,7 @@ export default {
       requestEncrypted: "",
       wasDecrypted: false,
       userName: "",
+      requestType: "",
     };
   },
   props: {
@@ -50,7 +51,10 @@ export default {
 
     this.title = dataFromPost["title"];
     this.price = dataFromPost["price"];
-    this.requestEncrypted = dataFromRequest["request"];
+    this.requestEncrypted =
+      this.requestType == "FromUser"
+        ? dataFromRequest["request"]
+        : dataFromRequest["selfRequest"];
 
     this.userName = await getUsername(this.$props.userAddress);
   },
@@ -79,7 +83,6 @@ export default {
 
     async displayDescriptionFunction() {
       this.displayDescription = !this.displayDescription;
-
 
       if (!this.wasDecrypted) {
         this.requestDescription = await this.decryptRequest(

@@ -92,14 +92,8 @@ export default {
       return data;
     },
 
-    async encryptRequest() {
-      const postHash = this.$route.params.id;
-
-      const postData = await this.getIpfsPost(postHash);
-
-      console.log(postData);
-
-      const postOwnerPublicKey = await getPublicKey(postData.ownerAddress);
+    async encryptRequest(address) {
+      const postOwnerPublicKey = await getPublicKey(address);
 
       const encrypted = await axios
         .post("/request/encrypt", {
@@ -118,10 +112,20 @@ export default {
       const client = create("http://127.0.0.1:5001");
 
       try {
-        const encryptedRequest = await this.encryptRequest();
+        const postHash = this.$route.params.id;
+
+        const postData = await this.getIpfsPost(postHash);
+
+        const encryptedRequest = await this.encryptRequest(
+          postData.ownerAddress
+        );
+        const encryptedSelfRequest = await this.encryptRequest(
+          this.$store.state.user.address
+        );
         const requestIpfs = await client.add(
           JSON.stringify({
             request: encryptedRequest,
+            selfRequest: encryptedSelfRequest,
             postHash: this.$route.params.id,
           })
         );
