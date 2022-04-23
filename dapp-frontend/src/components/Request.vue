@@ -80,9 +80,10 @@ export default {
     async displayDescriptionFunction() {
       this.displayDescription = !this.displayDescription;
 
+
       if (!this.wasDecrypted) {
         this.requestDescription = await this.decryptRequest(
-          this.userAddress,
+          this.$store.state.user.address,
           this.requestEncrypted
         );
       }
