@@ -9,8 +9,15 @@
       />
     </div>
     <div class="column">
-      <button class="button" @click="downloadFile">download</button>
-      <div class="accepted-symbol">symbol</div>
+      <div>{{ downloadMessage }}</div>
+      <button
+        id="downloadButton"
+        class="button"
+        :disabled="disableButton"
+        @click="downloadFile"
+      >
+        download
+      </button>
     </div>
   </div>
 </template>
@@ -35,7 +42,26 @@ export default {
     postIpfsAddress: String,
     requestIpfsAddress: String,
   },
+  data() {
+    return {
+      downloadMessage: "cant",
+    };
+  },
+  async mounted() {
+    this.downloadMessage = (await this.canBeDownloaded())
+      ? "File can be downloaded"
+      : "File can't be downloaded";
+  },
+  computed: {
+    disableButton() {
+      return this.downloadMessage == "File can't be downloaded";
+    },
+  },
   methods: {
+    async canBeDownloaded() {
+      return (await this.getFileHash()) != null;
+    },
+
     async decryptFile(address, encrypted) {
       const structuredData = {
         version: encrypted.version,
@@ -115,10 +141,13 @@ export default {
         FileManager.abi,
         provider
       );
-
-      const data = await contract.getFile(this.requestIpfsAddress);
-      console.log(data);
-      return data.file;
+      try {
+        const data = await contract.getFile(this.requestIpfsAddress);
+        console.log(data);
+        return data.file;
+      } catch (error) {
+        return null;
+      }
     },
 
     async getPaymentAmmount(requestIpfsHash) {
