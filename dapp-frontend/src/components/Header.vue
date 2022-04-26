@@ -32,7 +32,7 @@
           to="/account"
           v-if="$store.state.isAuthenticated"
         >
-          {{ $store.state.user.address }}
+          Account
         </router-link>
       </div>
     </div>

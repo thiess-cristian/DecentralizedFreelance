@@ -20,7 +20,6 @@
           </div>
 
           <p class="title">Address: {{ $store.state.user.address }}</p>
-          <router-link class="button" to="/mining"> Mining </router-link>
         </div>
       </div>
     </section>

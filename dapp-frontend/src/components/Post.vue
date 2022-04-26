@@ -3,7 +3,6 @@
     <div class="card-content">
       <div class="title is-size-4">{{ title }}</div>
       <div class="card-image">
-        img: {{ imageUrl }}
         <img :src="imageUrl" />
       </div>
       <div class="block">
