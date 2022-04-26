@@ -10,8 +10,11 @@
     <div class="block">
       <p>Price: {{ price }}</p>
     </div>
-    <button class="button" v-on:click="displayDescriptionFunction">
-      arrow
+    <button class="button is-info" v-on:click="displayDescriptionFunction">
+      <span class="icon">
+        <i class="fas fa-info-circle"></i>
+      </span>
+      <span> See request </span>
     </button>
     <div v-if="displayDescription">{{ requestDescription }}</div>
   </div>

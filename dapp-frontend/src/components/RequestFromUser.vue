@@ -26,8 +26,13 @@
           <span class="file-name"> ... </span>
         </label>
       </div>
-      <div class="accepted-symbol">symbol</div>
-      <button class="button" @click="submitFile">Submit</button>
+
+      <button class="button is-success" @click="submitFile">
+        <span class="icon">
+          <i class="fas fa-check-circle"></i>
+        </span>
+        <span> Submit </span>
+      </button>
     </div>
   </div>
 </template>

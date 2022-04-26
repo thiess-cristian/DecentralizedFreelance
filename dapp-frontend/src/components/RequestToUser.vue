@@ -12,11 +12,14 @@
       <div>{{ downloadMessage }}</div>
       <button
         id="downloadButton"
-        class="button"
+        class="button is-success"
         :disabled="disableButton"
         @click="downloadFile"
       >
-        download
+        <span class="icon">
+          <i class="fas fa-download"></i>
+        </span>
+        <span> Download </span>
       </button>
     </div>
   </div>

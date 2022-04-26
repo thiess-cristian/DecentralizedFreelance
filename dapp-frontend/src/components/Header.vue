@@ -1,38 +1,55 @@
 <template>
   <nav class="navbar has-shadow">
     <div class="navbar-start">
-      <router-link class="navbar-item" to="/"> Home </router-link>
+      <router-link class="navbar-item" to="/">
+        <span class="icon">
+          <i class="fas fa-home"></i>
+        </span>
+        <span>Home</span>
+      </router-link>
     </div>
     <div class="navbar-end">
       <div class="buttons">
         <router-link
-          class="navbar-item button"
+          class="navbar-item button is-success"
           to="/create_post"
           v-if="$store.state.isAuthenticated"
           @click="checkForUsername"
         >
-          Create Post
+          <span class="icon">
+            <i class="fas fa-solid fa-plus"></i>
+          </span>
+          <span> Create Post </span>
         </router-link>
         <button
-          class="navbar-item button"
+          class="navbar-item button is-info"
           v-if="!$store.state.isAuthenticated"
           @click="connect"
         >
-          Connect
+          <span class="icon">
+            <i class="fas fa-address-card"></i>
+          </span>
+          <span> Connect </span>
         </button>
         <button
           class="navbar-item button"
           v-if="$store.state.isAuthenticated"
           @click="disconnect"
         >
-          Disconnect
+          <span class="icon">
+            <i class="fas fa-times"></i>
+          </span>
+          <span> Disconnect </span>
         </button>
         <router-link
           class="navbar-item button"
           to="/account"
           v-if="$store.state.isAuthenticated"
         >
-          Account
+          <span class="icon">
+            <i class="fas fa-user-circle"></i>
+          </span>
+          <span> Account </span>
         </router-link>
       </div>
     </div>
