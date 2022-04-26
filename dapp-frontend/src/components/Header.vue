@@ -42,7 +42,7 @@
     <div class="has-text-centered">Please install Metamask</div>
   </div>
 
-  <div v-if="hasUserAccount == false" class="notification is-warning">
+  <div v-if="checkForUsername()" class="notification is-warning">
     <div class="has-text-centered">Account name is not set</div>
   </div>
 </template>
@@ -114,16 +114,19 @@ export default {
       this.$store.commit("removeToken");
       this.$store.commit("removeAddress");
       localStorage.setItem("address", "");
+
+      this.$router.push("/");
     },
     removeNotification() {
       const notification = document.getElementById("notification");
       notification.classList.add("is-hidden");
     },
     checkForUsername() {
-      console.log(this.$store.state);
       if (this.$store.state.user.name != "") {
-        console.log("lol");
+        return false;
       }
+
+      return true;
     },
   },
 };
