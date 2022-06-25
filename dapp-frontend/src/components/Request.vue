@@ -36,13 +36,13 @@ export default {
       requestEncrypted: "",
       wasDecrypted: false,
       userName: "",
-      requestType: "",
     };
   },
   props: {
     userAddress: String,
     postIpfsAddress: String,
     requestIpfsAddress: String,
+    requestType: String,
   },
   async mounted() {
     const dataFromPost = await this.getRequestFromIpfs(
@@ -87,9 +87,11 @@ export default {
     async displayDescriptionFunction() {
       this.displayDescription = !this.displayDescription;
 
+      const decryptAddress = this.$store.state.user.address;
+
       if (!this.wasDecrypted) {
         this.requestDescription = await this.decryptRequest(
-          this.$store.state.user.address,
+          decryptAddress,
           this.requestEncrypted
         );
       }
